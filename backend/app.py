@@ -2,12 +2,11 @@ import os
 import json
 import datetime
 from bson import json_util, objectid
-from pymongo import MongoClient
 from flask_cors import CORS
 from flask import Flask, jsonify, request, make_response, Response
 from flask.wrappers import Response as FlaskResponse
 from flask_restx import Resource, Api, fields, reqparse
-
+from utils.dao import XmemeDb
 from utils.image_url_validation import validate_image_url
 
 
@@ -23,14 +22,8 @@ app.config['RESTX_MASK_SWAGGER'] = False
 api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
           description='Meme Stream api built by Manas Acharya from Crio Winter of Doing Stage 2B', contact='Manas Acharya', contact_url='https://manasacharya.ml/', contact_email='manasacharya.101@gmail.com', default='xmeme', default_label='api')
 
-
-# Creating Mongo Connection Client
-try:
-    client = MongoClient(os.environ.get('MONGO_XMEME_CONNECT_URI'))
-    db = client.crio_xmeme
-except Exception as e:
-    print(f'DB Connect Exception: {e}')
-
+# Creating Xmeme - DAO object
+xdao = XmemeDb()
 
 # Flask Restx Request Parsers
 # /memes POST parameters
@@ -84,18 +77,13 @@ class MemesRoute(Resource):
             return validation_response
 
         # check if entry has already been made
-        if db.memes.count_documents({'name': request.args.get('name'), 'url': request.args.get('url'), 'caption': request.args.get('caption')}) > 0:
+        if xdao.count_meme_documents(request.args.get('name'), request.args.get('url'), request.args.get('caption')) > 0:
             return make_response(jsonify({'msg': 'Entry already exists'}), 409)
 
         try:
             # insert record into db
-            insert_info = db.memes.insert_one({
-                'name': request.args.get('name'),
-                'url': request.args.get('url'),
-                'caption': request.args.get('caption'),
-                'created': datetime.datetime.now(),
-                'updated': datetime.datetime.now()
-            })
+            insert_info = xdao.insert_meme(request.args.get(
+                'name'), request.args.get('url'), request.args.get('caption'))
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -109,7 +97,7 @@ class MemesRoute(Resource):
         '''Endpoint to fetch the latest 100 memes'''
         try:
             # Get latest 100 memes from db
-            meme_data = db.memes.find().sort([('created', 1)]).limit(100)
+            meme_data = xdao.find_memes(sort=[('created', 1)], limit=100)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -132,8 +120,7 @@ class MemesIDRoutes(Resource):
 
         try:
             # Get meme data
-            meme_data = db.memes.find_one(
-                {"_id": objectid.ObjectId(_id)})
+            meme_data = xdao.find_memes_by_id(_id)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -144,6 +131,7 @@ class MemesIDRoutes(Resource):
         # return meme data
         return json.loads(json_util.dumps(meme_data)), 200
 
+    @api.doc(responses={409: 'Passed Existing values', 200: 'Meme updated'})
     @ api.expect(memes_update_model)
     def patch(self, _id):
         '''Endpoint to update the caption or url for an existing meme'''
@@ -178,13 +166,7 @@ class MemesIDRoutes(Resource):
 
         try:
             # update meme
-            db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
-                '$set': {
-                    'caption': caption,
-                    'url': url,
-                    'updated': datetime.datetime.now()
-                }
-            }, upsert=False)
+            xdao.update_meme(_id, caption=caption, url=url)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
