@@ -1,14 +1,14 @@
 import os
-import re
 import json
-import requests
 import datetime
 from bson import json_util, objectid
 from pymongo import MongoClient
 from flask_cors import CORS
-from flask import Flask, jsonify, request, make_response, Blueprint
-from flask.wrappers import Response
+from flask import Flask, jsonify, request, make_response, Response
+from flask.wrappers import Response as FlaskResponse
 from flask_restx import Resource, Api, fields, reqparse
+
+from utils.image_url_validation import validate_image_url
 
 
 # Init flask app
@@ -18,15 +18,11 @@ app.config['SECRET_KEY'] = os.environ.get('XMEME_JWT_SECRET')
 app.config['RESTX_MASK_HEADER'] = None
 app.config['RESTX_MASK_SWAGGER'] = False
 
-# Configuring Flask Blueprint
-blueprint = Blueprint('api', __name__, url_prefix='/swagger-ui')
 
 # Init flask-restx api
-api = Api(blueprint, title='Xmeme-Manas-Acharya',
+api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
           description='Meme directory api built by Manas Acharya from Crio Winter of Doing Stage 2B', contact='Manas Acharya', contact_url='https://manasacharya.ml/', contact_email='manasacharya.101@gmail.com')
 
-# Register blueprint
-app.register_blueprint(blueprint)
 
 # Creating Mongo Connection Client
 try:
@@ -37,6 +33,7 @@ except Exception as e:
 
 
 # Flask Restx Request Parsers
+# /memes POST parameters
 memes_post = reqparse.RequestParser(bundle_errors=True)
 memes_post.add_argument(
     'name', type=str, required=True)
@@ -80,27 +77,18 @@ class MemesRoute(Resource):
         Returns: Unique ID for the uploaded meme.
         Expects: Meme Owner Name, Valid Image URL, Meme Caption'''
 
-        # validate if url is actually url source: https://github.com/django/django/blob/stable/1.3.x/django/core/validators.py#L45
-        image_url_regex = re.compile(
-            r'^(?:http|ftp)s?://'  # http:// or https://
-            # domain
-            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
-            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
-            r'(?::\d+)?'  # optional port
-            r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-        # validate url with regex
-        if not re.match(image_url_regex, request.args.get('url')):
-            return make_response(jsonify({'msg': "Url isn't valid"}), 422)
-
-        # check if content at url is of image type
-        if not self.is_url_image(request.args.get('url')):
-            return make_response(jsonify({'msg': "Url isn't valid image"}), 422)
+        # validate content at url is image
+        validation_status, validation_response = validate_image_url(
+            request.args.get('url'))
+        if not validation_status:
+            return validation_response
 
         # check if entry has already been made
         if db.memes.count_documents({'name': request.args.get('name'), 'url': request.args.get('url'), 'caption': request.args.get('caption')}) > 0:
             return make_response(jsonify({'msg': 'Entry already exists'}), 409)
 
         try:
+            # insert record into db
             insert_info = db.memes.insert_one({
                 'name': request.args.get('name'),
                 'url': request.args.get('url'),
@@ -109,29 +97,24 @@ class MemesRoute(Resource):
                 'updated': datetime.datetime.now()
             })
         except Exception as e:
-            return make_response(jsonify({'msg': 'DB Error', 'exception': e}), 500)
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
+        # return Object id as String
         _id = str(insert_info.inserted_id)
         return make_response(jsonify(({'id': _id})), 200)
 
     @ api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    @ api.marshal_list_with(memes_get_response_model, code=200)
+    # @ api.marshal_list_with(memes_get_response_model, code=200)
     def get(self):
         '''Endpoint to fetch the latest 100 memes'''
         try:
             # Get latest 100 memes from db
             meme_data = db.memes.find().sort([('created', 1)]).limit(100)
         except Exception as e:
-            return make_response(jsonify({'msg': 'DB Error', 'exception': e}), 500)
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
-        # return response
+        # return meme data
         return json.loads(json_util.dumps(meme_data)), 200
-
-    def is_url_image(self, url):
-        image_formats = ("image/png", "image/jpeg", "image/jpg", "image/gif",
-                         "image/apng", "image/avif", "image/jfif", "image/webp")
-        resp = requests.head(url)
-        return resp.headers['content-type'] in image_formats
 
 
 @ api.route('/memes/<_id>')
@@ -140,19 +123,19 @@ class MemesIDRoutes(Resource):
     def get(self, _id):
         '''Endpoint to specify a particular id to fetch a single Meme'''
 
-        # Convert string id to bsn Object for mongo
-        # if it fails that means id didn't conform to mongo ObjectId standard
         try:
+            # Convert string id to bson Object for mongo
+            # if it fails that means passed id didn't conform to mongo ObjectId standard therefore Meme doesn't exist
             _id = objectid.ObjectId(_id)
         except Exception as e:
             return make_response(jsonify({'msg': "Meme with specified ID does not exist"}), 404)
 
-        # Get meme data
         try:
+            # Get meme data
             meme_data = db.memes.find_one(
                 {"_id": objectid.ObjectId(_id)})
         except Exception as e:
-            return make_response(jsonify({'msg': 'DB Error', 'exception': e}), 500)
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
         # check is query response is None ie. image exists or not
         if not meme_data:
@@ -161,53 +144,50 @@ class MemesIDRoutes(Resource):
         # return meme data
         return json.loads(json_util.dumps(meme_data)), 200
 
-    @api.expect(memes_update_model)
+    @ api.expect(memes_update_model)
     def patch(self, _id):
         '''Endpoint to update the caption or url for an existing meme'''
-        # Check if Meme exists for ID
+        # Check if Meme exists for ID and get relevant data
         meme_data = self.get(_id)
 
-        if isinstance(meme_data, Response):
+        # if get() returns response type returns it
+        if isinstance(meme_data, FlaskResponse):
             return meme_data
 
+        # jsonify response
         req_data = json.loads(request.data)
+        caption = meme_data[0]['caption']
+        url = meme_data[0]['url']
 
-        if 'caption' in req_data and not req_data['caption'].isspace():
-            meme_data[0]['caption'] = req_data['caption']
-        if 'url' in req_data and not req_data['url'].isspace():
-            meme_data[0]['url'] = req_data['url']
-            # validate if url is actually url source: https://github.com/django/django/blob/stable/1.3.x/django/core/validators.py#L45
-            image_url_regex = re.compile(
-                r'^(?:http|ftp)s?://'  # http:// or https://
-                # domain
-                r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
-                r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
-                r'(?::\d+)?'  # optional port
-                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-            # validate url with regex
-            if not re.match(image_url_regex, meme_data[0]['url']):
-                return make_response(jsonify({'msg': "Url isn't valid"}), 422)
-            # check if content at url is of image type
-            if not self.is_url_image(meme_data[0]['url']):
-                return make_response(jsonify({'msg': "Url isn't valid image"}), 422)
+        # extract caption and url info for request data
+        # assign value if passed value is not empty string or doesn't exist
+        if 'caption' in req_data and len(req_data['caption'].split()) > 0:
+            caption = req_data['caption']
+        if 'url' in req_data and len(req_data['url'].split()) > 0:
+            url = req_data['url']
+
+        if caption == meme_data[0]['caption'] and url == meme_data[0]['url']:
+            return make_response(jsonify({'msg': 'Field values identical to original meme data'}), 409)
+
+        # validate content at url is image
+        validation_status, validation_response = validate_image_url(url)
+        if not validation_status:
+            return validation_response
 
         try:
+            # update meme
             db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
                 '$set': {
                     'caption': meme_data[0]['caption'],
-                    'url': meme_data[0]['url']
+                    'url': meme_data[0]['url'],
+                    'edited': datetime.datetime.now()
                 }
             }, upsert=False)
         except Exception as e:
-            return make_response(jsonify({'msg': 'DB Error', 'exception': e}), 500)
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
+        # update successful
         return make_response(jsonify({'msg': f'Updated image {_id}'}), 200)
-
-    def is_url_image(self, url):
-        image_formats = ("image/png", "image/jpeg", "image/jpg", "image/gif",
-                         "image/apng", "image/avif", "image/jfif", "image/webp")
-        resp = requests.head(url)
-        return resp.headers['content-type'] in image_formats
 
 
 if __name__ == "__main__":
