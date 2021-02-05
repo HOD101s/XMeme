@@ -21,7 +21,7 @@ app.config['RESTX_MASK_SWAGGER'] = False
 
 # Init flask-restx api
 api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
-          description='Meme directory api built by Manas Acharya from Crio Winter of Doing Stage 2B', contact='Manas Acharya', contact_url='https://manasacharya.ml/', contact_email='manasacharya.101@gmail.com')
+          description='Meme Stream api built by Manas Acharya from Crio Winter of Doing Stage 2B', contact='Manas Acharya', contact_url='https://manasacharya.ml/', contact_email='manasacharya.101@gmail.com', default='xmeme', default_label='api')
 
 
 # Creating Mongo Connection Client
@@ -48,8 +48,8 @@ memes_post_response_model = api.model('Memes Post Response Model', {
     "id": fields.String,
 })
 mongo_id_model = api.model(
-    'Mongo ID Model', {"$oid": fields.String('ObjectId from Mongo')})
-mongo_datetime_model = api.model('Mongo_Datetime_Model', {
+    'ObjectId Model', {"$oid": fields.String('ObjectId from Mongo')})
+mongo_datetime_model = api.model('Datetime Model', {
                                  "$date": fields.Integer})
 memes_get_response_model = api.model('Memes Get Response Model', {
     "_id": fields.Nested(mongo_id_model),
@@ -59,7 +59,7 @@ memes_get_response_model = api.model('Memes Get Response Model', {
     "created": fields.Nested(mongo_datetime_model),
     "updated": fields.Nested(mongo_datetime_model)
 })
-memes_update_model = api.model('Memes update Model', {
+memes_update_model = api.model('Memes update Input', {
     'caption': fields.String,
     'url': fields.String
 })
@@ -71,7 +71,7 @@ memes_update_model = api.model('Memes update Model', {
 class MemesRoute(Resource):
     @api.doc(responses={422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
     @ api.doc(params={'name': "Meme Owner's Name",  'url': "Meme image URL", 'caption': "meme caption"})
-    @ api.expect(memes_post)
+    @api.expect(memes_post)
     def post(self):
         '''Endpoint to send a meme to the backend.
         Returns: Unique ID for the uploaded meme.
@@ -104,7 +104,7 @@ class MemesRoute(Resource):
         return make_response(jsonify(({'id': _id})), 200)
 
     @ api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    # @ api.marshal_list_with(memes_get_response_model, code=200)
+    @ api.marshal_list_with(memes_get_response_model, code=200)
     def get(self):
         '''Endpoint to fetch the latest 100 memes'''
         try:
@@ -166,21 +166,23 @@ class MemesIDRoutes(Resource):
         if 'url' in req_data and len(req_data['url'].split()) > 0:
             url = req_data['url']
 
+        # check if requested changes are updating to same existing values
         if caption == meme_data[0]['caption'] and url == meme_data[0]['url']:
             return make_response(jsonify({'msg': 'Field values identical to original meme data'}), 409)
 
-        # validate content at url is image
-        validation_status, validation_response = validate_image_url(url)
-        if not validation_status:
-            return validation_response
+        # validate content at url is image if new url is passed
+        if url != meme_data[0]['url']:
+            validation_status, validation_response = validate_image_url(url)
+            if not validation_status:
+                return validation_response
 
         try:
             # update meme
             db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
                 '$set': {
-                    'caption': meme_data[0]['caption'],
-                    'url': meme_data[0]['url'],
-                    'edited': datetime.datetime.now()
+                    'caption': caption,
+                    'url': url,
+                    'updated': datetime.datetime.now()
                 }
             }, upsert=False)
         except Exception as e:
