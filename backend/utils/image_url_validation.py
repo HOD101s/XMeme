@@ -18,7 +18,7 @@ def validate_image_url(url):
     # check if content at url is of image type
     if not validate_url_content(url):  # meme_data[0]['url']
         return False, make_response(jsonify({'msg': "Url doesn't lead to valid image"}), 422)
-    return True, make_response(jsonify({'msg': "Url is valid image"}), 422)
+    return True, make_response(jsonify({'msg': "Url is valid image"}), 200)
 
 
 def validate_url_content(url):
