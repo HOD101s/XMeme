@@ -15,7 +15,7 @@ class APITests(unittest.TestCase):
     # test POST /memes
     def test_post_memes(self):
         tester = app.test_client(self)
-        # test ivalid ur;
+        # test ivalid url
         response = tester.post(
             '/memes', query_string=dict(name='Office memer', url='', caption='caption'))
         assert response.status_code == 422
@@ -63,15 +63,38 @@ class APITests(unittest.TestCase):
         # update id
         _id = '601d1514954ea510ec5396d6'
 
-        caption = "Office"  # existing caption
-        url = "https://i.pinimg.com/736x/90/bf/93/90bf93263e6378c4b8841873f98de89f.jpg"
+        # SET 1
+        # ogcaption = "Stanley is boss"  # existing caption
+        # ogurl = "https://img.cinemablend.com/filter:scale/quill/0/4/e/e/e/a/04eeea84886e6db3c9d55e3698479ef00eb14f49.jpg?mw=600"  # existing url
+        # newcaption1 = "Stanley is still boss"  # new caption 1
+        # newcaption2 = "Online exams be EZ"  # new caption 2
+        # newurl = "https://i.pinimg.com/736x/90/bf/93/90bf93263e6378c4b8841873f98de89f.jpg"  # new url
+
+        # SET 2
+        ogcaption = "Online exams be EZ"  # existing caption
+        ogurl = "https://i.pinimg.com/736x/90/bf/93/90bf93263e6378c4b8841873f98de89f.jpg"  # existing url
+        newcaption1 = "Is stanley boss?"  # new caption 1
+        newcaption2 = "Stanley is boss"  # new caption 2
+        newurl = "https://img.cinemablend.com/filter:scale/quill/0/4/e/e/e/a/04eeea84886e6db3c9d55e3698479ef00eb14f49.jpg?mw=600"  # new url
+
+        # passing existing values : gives 409 duplication
         response = tester.patch(
-            f'/memes/{_id}', data="{\"caption\" : \""+caption+"\",\"url\": \""+url+"\"}", headers={'Content-Type': 'text/plain'})
+            f'/memes/{_id}', data="{\"caption\" : \""+ogcaption+"\",\"url\": \""+ogurl+"\"}", headers={'Content-Type': 'text/plain'})
         assert response.status_code == 409
 
-        caption = "New Caption"  # new caption
+        # updates caption and url
         response = tester.patch(
-            f'/memes/{_id}', data="{\"caption\" : \""+caption+"\",\"url\": \""+url+"\"}", headers={'Content-Type': 'text/plain'})
+            f'/memes/{_id}', data="{\"caption\" : \""+newcaption1+"\",\"url\": \""+ogurl+"\"}", headers={'Content-Type': 'text/plain'})
+        assert response.status_code == 200
+
+        # updates caption only
+        response = tester.patch(
+            f'/memes/{_id}', data="{\"caption\" : \""+newcaption2+"\"}", headers={'Content-Type': 'text/plain'})
+        assert response.status_code == 200
+
+        # updates only url
+        response = tester.patch(
+            f'/memes/{_id}', data="{\"url\": \""+newurl+"\"}", headers={'Content-Type': 'text/plain'})
         assert response.status_code == 200
 
 
