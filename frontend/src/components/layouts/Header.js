@@ -1,23 +1,7 @@
 import React from "react";
-import {
-  Chip,
-  Toolbar,
-  Typography,
-  makeStyles,
-  Container,
-} from "@material-ui/core";
+import { Chip, Toolbar, Typography, Container } from "@material-ui/core";
 import logo from "../../static/images/logo192.png";
 import "../../static/css/header.css";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3, 2),
-    height: 200,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-}));
 
 const openProfileSite = () => {
   window.open("https://www.manasacharya.ml", "_blank");
@@ -38,7 +22,7 @@ function Header() {
           </Typography>
           <Chip
             className="header__ownerchip"
-            color="primary"
+            color="secondary"
             label="Manas Acharya"
             onClick={openProfileSite}
           />
