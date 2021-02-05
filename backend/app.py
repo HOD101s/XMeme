@@ -192,5 +192,11 @@ class MemesIDRoutes(Resource):
         return make_response(jsonify({'msg': f'Updated image {_id}'}), 200)
 
 
+# Flask error handling
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify({'msg': 'Resource not found'}), 404
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
