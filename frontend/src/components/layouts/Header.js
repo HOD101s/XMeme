@@ -5,15 +5,21 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { faExternalLinkAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../static/images/logo192.png";
 
 function Header() {
   return (
     <div className="header">
-      <Navbar collapseOnSelect expand="lg" sticky="top">
+      <Navbar
+        collapseOnSelect
+        className="header_navbar"
+        expand="lg"
+        fixed="top"
+        sticky="top"
+      >
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="#">
             <img
               alt=""
               src={logo}
@@ -45,6 +51,11 @@ function Header() {
                 <Button variant="outline-success">
                   Swagger Documentation{" "}
                   <FontAwesomeIcon icon={faExternalLinkAlt} />
+                </Button>{" "}
+              </Nav.Link>
+              <Nav.Link>
+                <Button variant="outline-primary">
+                  Add Meme <FontAwesomeIcon icon={faPlus} size="xs" />
                 </Button>{" "}
               </Nav.Link>
             </Nav>

@@ -11,36 +11,45 @@ function ImageGrid() {
     axios.get("https://xmeme-manas-api.herokuapp.com/memes").then((resp) => {
       setmemeData(resp.data);
     });
-    return () => {};
   }, []);
 
   const timeSince = (date) => {
-    {
-      var seconds = Math.floor((new Date() - date) / 1000);
+    var seconds = Math.floor((new Date() - date) / 1000);
+    var intervalType;
 
-      var interval = seconds / 31536000;
-
-      if (interval > 1) {
-        return Math.floor(interval) + " years";
+    var interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+      intervalType = "year";
+    } else {
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) {
+        intervalType = "month";
+      } else {
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+          intervalType = "day";
+        } else {
+          interval = Math.floor(seconds / 3600);
+          if (interval >= 1) {
+            intervalType = "hour";
+          } else {
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) {
+              intervalType = "minute";
+            } else {
+              interval = seconds;
+              intervalType = "second";
+            }
+          }
+        }
       }
-      interval = seconds / 2592000;
-      if (interval > 1) {
-        return Math.floor(interval) + " months";
-      }
-      interval = seconds / 86400;
-      if (interval > 1) {
-        return Math.floor(interval) + " days";
-      }
-      interval = seconds / 3600;
-      if (interval > 1) {
-        return Math.floor(interval) + " hours";
-      }
-      interval = seconds / 60;
-      if (interval > 1) {
-        return Math.floor(interval) + " minutes";
-      }
-      return Math.floor(seconds) + " seconds";
     }
+
+    if (interval > 1 || interval === 0) {
+      intervalType += "s";
+    }
+
+    return interval + " " + intervalType;
   };
 
   return (
@@ -73,14 +82,6 @@ function ImageGrid() {
               </Card>
               <br />
             </div>
-            // <div className="image-grid__card">
-            //   <div className="image-grid__card_name">
-            //     <Avatar name={meme.name} size="35" round={true} />{" "}
-            //     <h4>{meme.name}</h4>
-            //   </div>
-            //   <img src={meme.url} />
-            //   <h4 className="image-grid__card__caption">{meme.caption}</h4>
-            // </div>
           ))}
       </Container>
     </div>
