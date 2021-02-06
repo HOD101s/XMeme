@@ -17,6 +17,7 @@ function Contributors() {
   const badge = ["primary", "secondary", "success", "danger", "warning"];
   return (
     <div>
+      <h1>Meet Our XMeme Community</h1>
       <Container className="contributorsBadgeContainer">
         {ownerNameData &&
           ownerNameData.map((name, id) => (
