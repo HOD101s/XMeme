@@ -1,11 +1,7 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../static/images/logo192.png";
 
 function Footer() {
