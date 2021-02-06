@@ -98,3 +98,14 @@ body {
   border-top: 1px solid lightgray;
   background-color: white;
 }
+
+.contributorsBadgeContainer {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 1em;
+}
+
+.contributorsBadgeHeaderWrap {
+  margin: 0.3em;
+}
