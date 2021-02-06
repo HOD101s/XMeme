@@ -108,7 +108,7 @@ class MemesRoute(Resource):
         try:
             # Get latest 100 memes from db
             meme_data = xdao.find_memes(
-                sort=[('created', 1)], limit=100)
+                sort=[('created', -1)], limit=100)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
