@@ -21,14 +21,14 @@ class XmemeDb:
             search_object['caption'] = caption
         return int(self.db.memes.count_documents(search_object))
 
-    def insert_meme(self, name, url, caption, created=datetime.datetime.now(), updated=datetime.datetime.now()):
+    def insert_meme(self, name, url, caption):
         '''Insert meme document in Db'''
         return self.db.memes.insert_one({
             'name': name,
             'url': url,
             'caption': caption,
-            'created': created,
-            'updated': updated
+            'created': datetime.datetime.now(),
+            'updated': datetime.datetime.now()
         })
 
     def find_memes(self, sort=[], skip=0, limit=100):
