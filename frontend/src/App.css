@@ -42,3 +42,7 @@ body {
 .footer__container {
   display: flex;
 }
+
+.image-grid__card_edit {
+  margin-left: 1em;
+}

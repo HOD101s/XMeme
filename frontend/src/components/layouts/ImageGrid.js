@@ -23,30 +23,10 @@ function ImageGrid() {
                 memeName={meme.name}
                 memeUrl={meme.url}
                 memeCaption={meme.caption}
-                memeUpdatedTime={new Date(meme.updated["$date"])}
+                memeId={meme._id["$oid"]}
+                memeUpdatedTime={new Date(meme.created["$date"])}
+                canUpdate={true}
               />
-              {/* <Card className="image-grid__card">
-                <Card.Title className="image-grid__card_caption">
-                  {meme.caption}
-                </Card.Title>
-                <Card.Img variant="top" src={meme.url} />
-                <Card.Body>
-                  <Card.Text className="image-grid__card_name">
-                    <Avatar
-                      name={meme.name}
-                      size="25"
-                      round={true}
-                      textSizeRatio={1.2}
-                    />{" "}
-                    {meme.name}
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">
-                    Uploaded {timeSince(new Date(meme.updated["$date"]))} ago
-                  </small>
-                </Card.Footer>
-              </Card> */}
               <br />
             </div>
           ))}

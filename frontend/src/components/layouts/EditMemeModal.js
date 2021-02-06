@@ -3,41 +3,53 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
-import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
 import validUrl from "../utils/validUrl";
-import checkUrlIsImage from "../utils/checkUrlIsImage";
 import axios from "axios";
 import Avatar from "react-avatar";
 import timeSince from "../utils/timeSince";
 
-function FormModal(props) {
-  const [memeName, setmemeName] = useState("");
-  const [memeUrl, setmemeUrl] = useState("");
-  const [memeCaption, setmemeCaption] = useState("");
+function EditMemeModal(props) {
+  const [memeUrl, setmemeUrl] = useState(props.memeUrl);
+  const [memeCaption, setmemeCaption] = useState(props.memeCaption);
 
-  const submitMeme = async () => {
+  const editMeme = async () => {
     let error_elem = document.getElementById("error_msg");
     error_elem.innerText = "";
-    // Check if any field is empty
-    if (!memeCaption || !memeName || !memeCaption) {
-      error_elem.innerText = "Kindly enter values for all fields";
-      return;
+    let updateObj = {};
+
+    if (memeUrl !== props.memeUrl && memeUrl) {
+      // check if URL is valid
+      if (!validUrl(memeUrl)) {
+        error_elem.innerText = "Kindly enter valid URL";
+        return;
+      }
+
+      updateObj["url"] = memeUrl;
+    }
+    if (memeCaption !== props.memeCaption && memeCaption) {
+      updateObj["caption"] = memeCaption;
     }
 
-    // check if URL is valid
-    if (!validUrl(memeUrl)) {
-      error_elem.innerText = "Kindly enter valid URL";
+    if (Object.keys(updateObj).length === 0) {
+      error_elem.innerText = "Must set some different value";
       return;
     }
 
     try {
-      await axios.post("https://xmeme-manas-api.herokuapp.com/memes", {
-        name: memeName,
-        url: memeUrl,
-        caption: memeCaption,
-      });
-      window.location.reload();
+      await axios.patch(
+        `https://xmeme-manas-api.herokuapp.com/memes/${props.memeId}`,
+        updateObj
+      );
+      //   Change DOM values instead of reload
+      if (updateObj.hasOwnProperty("caption")) {
+        props.setmemeCaptionParent(updateObj["caption"]);
+      }
+      if (updateObj.hasOwnProperty("url")) {
+        props.setmemeUrlParent(updateObj["url"]);
+      }
+      props.setShow(false);
     } catch (e) {
       if (e.response.data.msg) {
         error_elem.innerText = e.response.data.msg;
@@ -50,34 +62,24 @@ function FormModal(props) {
   return (
     <div>
       <Modal
-        show={props.showFormModal}
-        onHide={() => props.setshowFormModal(false)}
+        show={props.show}
+        onHide={() => {
+          setmemeUrl(props.memeUrl);
+          setmemeCaption(props.memeCaption);
+          props.setShow(false);
+        }}
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Upload Meme</Modal.Title>
+          <Modal.Title>Edit Meme</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="nameForm">
-              <Form.Label>Owner Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="name"
-                value={memeName}
-                onChange={(e) => setmemeName(e.target.value)}
-              />
-              <Form.Text className="text-muted">
-                XMeme appreciates Original Posts
-              </Form.Text>
-            </Form.Group>
-
             <Form.Group controlId="urlForm">
               <Form.Label>Meme URL</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="url"
-                value={memeUrl}
+                placeholder={memeUrl}
                 onChange={(e) => setmemeUrl(e.target.value)}
               />
               <Form.Text className="text-muted">
@@ -89,8 +91,7 @@ function FormModal(props) {
               <Form.Label>Caption</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="caption"
-                value={memeCaption}
+                placeholder={memeCaption}
                 onChange={(e) => setmemeCaption(e.target.value)}
               />
               <Form.Text className="text-muted">
@@ -100,6 +101,7 @@ function FormModal(props) {
           </Form>
 
           <Form.Label>Post Preview</Form.Label>
+          {/* PREVIEW */}
           <Container className="text-center">
             <Card className="image-grid__card">
               <Card.Title className="image-grid__card_caption">
@@ -109,12 +111,12 @@ function FormModal(props) {
               <Card.Body>
                 <Card.Text className="image-grid__card_name">
                   <Avatar
-                    name={memeName}
+                    name={props.memeName}
                     size="25"
                     round={true}
                     textSizeRatio={1.2}
                   />{" "}
-                  {memeName}
+                  {props.memeName}
                 </Card.Text>
               </Card.Body>
               <Card.Footer>
@@ -127,13 +129,8 @@ function FormModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <Badge variant="danger" id="error_msg"></Badge>
-          <Button
-            variant="success"
-            onClick={async () => {
-              await submitMeme();
-            }}
-          >
-            Upload
+          <Button variant="success" onClick={async () => await editMeme()}>
+            Confirm Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -141,4 +138,4 @@ function FormModal(props) {
   );
 }
 
-export default FormModal;
+export default EditMemeModal;

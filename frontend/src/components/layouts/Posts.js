@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "react-avatar";
 import Card from "react-bootstrap/Card";
 import timeSince from "../utils/timeSince";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import EditMemeModal from "./EditMemeModal";
 
 function Posts(props) {
+  const [showEdit, setshowEdit] = useState(false);
+
+  const [memeUrlProp, setmemeUrlProp] = useState(props.memeUrl);
+  const [memeCaptionProp, setmemeCaptionProp] = useState(props.memeCaption);
+
   // Returns Individual post structure
   return (
     <div>
       <Card className="image-grid__card">
         <Card.Title className="image-grid__card_caption">
-          {props.memeCaption}
+          {memeCaptionProp}
+          {props.canUpdate && (
+            <FontAwesomeIcon
+              className="image-grid__card_edit"
+              size="xs"
+              icon={faEdit}
+              onClick={() => setshowEdit(true)}
+            />
+          )}
         </Card.Title>
-        <Card.Img variant="top" src={props.memeUrl} />
+        <Card.Img variant="top" src={memeUrlProp} />
         <Card.Body>
           <Card.Text className="image-grid__card_name">
             <Avatar
@@ -29,6 +45,18 @@ function Posts(props) {
           </small>
         </Card.Footer>
       </Card>
+      {props.canUpdate && (
+        <EditMemeModal
+          show={showEdit}
+          setShow={setshowEdit}
+          memeName={props.memeName}
+          memeUrl={props.memeUrl}
+          memeCaption={props.memeCaption}
+          memeId={props.memeId}
+          setmemeUrlParent={setmemeUrlProp}
+          setmemeCaptionParent={setmemeCaptionProp}
+        />
+      )}
     </div>
   );
 }

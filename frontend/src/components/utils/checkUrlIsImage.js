@@ -14,8 +14,10 @@ async function checkUrlIsImage(url) {
       "image/jfif",
       "image/webp",
     ];
+    console.log(response.headers["content-type"]);
     return validTypes.includes(response.headers["content-type"]);
-  } catch {
+  } catch (e) {
+    console.log(e);
     return false;
   }
 }
