@@ -6,17 +6,19 @@ from flask_cors import CORS
 from flask import Flask, jsonify, request, make_response, Response
 from flask.wrappers import Response as FlaskResponse
 from flask_restx import Resource, Api, fields, reqparse
+from flask_cors import CORS
 from utils.dao import XmemeDb
 from utils.image_url_validation import validate_image_url
 
 
 # Init flask app
 app = Flask(__name__)
+cors = CORS(app)
 # Secret_key for jwt
 app.config['SECRET_KEY'] = os.environ.get('XMEME_JWT_SECRET')
 app.config['RESTX_MASK_HEADER'] = None
 app.config['RESTX_MASK_SWAGGER'] = False
-
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Init flask-restx api
 api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
