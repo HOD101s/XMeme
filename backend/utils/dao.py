@@ -56,4 +56,4 @@ class XmemeDb:
 
     def get_contributors(self):
         '''Get all meme Owners'''
-        return self.db.memes.distinct('name')
+        return self.db.memes.aggregate([{"$group": {"_id": "$name", "count": {"$sum": 1}}}])

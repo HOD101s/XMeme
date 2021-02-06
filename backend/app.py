@@ -63,6 +63,10 @@ memes_post_model = api.model('Memes post Input', {
     'caption': fields.String,
     'url': fields.String
 })
+memes_contributors_model = api.model('Memes Contributors', {
+    '_id': fields.String,
+    'count': fields.String
+})
 
 
 # ENDPOINTS
@@ -190,8 +194,9 @@ class MemesIDRoutes(Resource):
 @api.route('/contributors')
 class Contributors(Resource):
     @api.doc(responses={200: "Fetched Meme Owner Data", 500: "Internal Server Error"})
+    @api.marshal_with(memes_contributors_model)
     def get(self):
-        '''Fetch all Meme Owners'''
+        '''Fetch all Meme Owners and Submission Count'''
         try:
             # Get latest 100 memes from db
             contributors_data = xdao.get_contributors()
