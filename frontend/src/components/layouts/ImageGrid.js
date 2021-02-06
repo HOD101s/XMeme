@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Posts from "./Posts";
 
 function ImageGrid() {
+  // Generates POST and fetches data from db with axios
   const [memeData, setmemeData] = useState([]);
 
   useEffect(() => {

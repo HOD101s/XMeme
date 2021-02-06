@@ -10,6 +10,7 @@ import logo from "../../static/images/logo192.png";
 import FormModal from "./FormModal";
 
 function Header(props) {
+  // Returns XMeme Navbar header
   return (
     <div className="header">
       <Navbar

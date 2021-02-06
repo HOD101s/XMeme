@@ -1,4 +1,6 @@
+// source https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
 const timeSince = (date) => {
+  // returns time since date passed
   var seconds = Math.floor((new Date() - date) / 1000);
   var intervalType;
 

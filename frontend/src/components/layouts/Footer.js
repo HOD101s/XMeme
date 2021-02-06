@@ -5,6 +5,7 @@ import Badge from "react-bootstrap/Badge";
 import logo from "../../static/images/logo192.png";
 
 function Footer() {
+  // Returns XMeme footer
   return (
     <div className="footer">
       <Navbar

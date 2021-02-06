@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import timeSince from "../utils/timeSince";
 
 function Posts(props) {
+  // Returns Individual post structure
   return (
     <div>
       <Card className="image-grid__card">

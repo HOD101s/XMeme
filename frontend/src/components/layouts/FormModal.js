@@ -5,14 +5,42 @@ import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Posts from "./Posts";
+import validUrl from "../utils/validUrl";
+import checkUrlIsImage from "../utils/checkUrlIsImage";
+import axios from "axios";
 
 function FormModal(props) {
   const [memeName, setmemeName] = useState("");
   const [memeUrl, setmemeUrl] = useState("");
   const [memeCaption, setmemeCaption] = useState("");
 
-  const submitMeme = () => {
-    console.log(memeName, memeUrl, memeCaption);
+  const submitMeme = async () => {
+    let error_elem = document.getElementById("error_msg");
+    error_elem.innerText = "";
+    // Check if any field is empty
+    if (!memeCaption || !memeName || !memeCaption) {
+      error_elem.innerText = "Kindly enter values for all fields";
+      return;
+    }
+
+    // check if URL is valid
+    if (!validUrl(memeUrl)) {
+      error_elem.innerText = "Kindly enter valid URL";
+      return;
+    }
+
+    // check if url is image
+    if (!(await checkUrlIsImage(memeUrl))) {
+      error_elem.innerText = "Kindly enter valid Meme Image URL";
+      return;
+    }
+
+    await axios.post("https://xmeme-manas-api.herokuapp.com/memes", {
+      name: memeName,
+      url: memeUrl,
+      caption: memeCaption,
+    });
+    window.location.reload();
   };
 
   return (
@@ -68,7 +96,7 @@ function FormModal(props) {
           </Form>
 
           <Form.Label>Post Preview</Form.Label>
-          <Container>
+          <Container className="text-center">
             <Posts
               memeName={memeName}
               memeUrl={memeUrl}
@@ -79,7 +107,12 @@ function FormModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <Badge variant="danger" id="error_msg"></Badge>
-          <Button variant="success" onClick={submitMeme}>
+          <Button
+            variant="success"
+            onClick={async () => {
+              await submitMeme();
+            }}
+          >
             Upload
           </Button>
         </Modal.Footer>
