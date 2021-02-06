@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function getUrlContentType(url) {
+async function checkUrlIsImage(url) {
   // Gets url response data
   try {
     let response = await axios.get(url);
@@ -20,4 +20,4 @@ async function getUrlContentType(url) {
   }
 }
 
-export default getUrlContentType;
+export default checkUrlIsImage;
