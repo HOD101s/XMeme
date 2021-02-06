@@ -103,8 +103,8 @@ class MemesRoute(Resource):
         _id = str(insert_info.inserted_id)
         return make_response(jsonify(({'id': _id})), 200)
 
-    @ api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    @ api.marshal_list_with(memes_get_response_model, code=200)
+    @api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
+    @api.marshal_list_with(memes_get_response_model, code=200)
     def get(self):
         '''Endpoint to fetch the latest 100 memes'''
         try:
@@ -118,9 +118,9 @@ class MemesRoute(Resource):
         return json.loads(json_util.dumps(meme_data)), 200
 
 
-@ api.route('/memes/<_id>')
+@api.route('/memes/<_id>')
 class MemesIDRoutes(Resource):
-    @ api.doc(responses={404: "Meme with specified ID doesn't exist", 200: "Fetched specified Meme Data", 500: "Internal Server Error"})
+    @api.doc(responses={404: "Meme with specified ID doesn't exist", 200: "Fetched specified Meme Data", 500: "Internal Server Error"})
     def get(self, _id):
         '''Endpoint to specify a particular id to fetch a single Meme'''
 
@@ -145,7 +145,7 @@ class MemesIDRoutes(Resource):
         return json.loads(json_util.dumps(meme_data)), 200
 
     @api.doc(responses={409: 'Passed Existing values', 200: 'Meme updated'})
-    @ api.expect(memes_update_model)
+    @api.expect(memes_update_model)
     def patch(self, _id):
         '''Endpoint to update the caption or url for an existing meme'''
         # Check if Meme exists for ID and get relevant data
@@ -185,6 +185,21 @@ class MemesIDRoutes(Resource):
 
         # update successful
         return make_response(jsonify({'msg': f'Updated image {_id}'}), 200)
+
+
+@api.route('/contributors')
+class Contributors(Resource):
+    @api.doc(responses={200: "Fetched Meme Owner Data", 500: "Internal Server Error"})
+    def get(self):
+        '''Fetch all Meme Owners'''
+        try:
+            # Get latest 100 memes from db
+            contributors_data = xdao.get_contributors()
+        except Exception as e:
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
+
+        # return meme data
+        return json.loads(json_util.dumps(contributors_data)), 200
 
 
 # Flask error handling

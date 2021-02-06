@@ -53,3 +53,7 @@ class XmemeDb:
         self.db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
             '$set': _set
         }, upsert=upsert)
+
+    def get_contributors(self):
+        '''Get all meme Owners'''
+        return self.db.memes.distinct('name')
