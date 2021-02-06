@@ -69,7 +69,7 @@ memes_post_model = api.model('Memes post Input', {
 
 @api.route('/memes')
 class MemesRoute(Resource):
-    @api.doc(responses={422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
+    @api.doc(responses={400: "Not received all params", 422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
     @api.expect(memes_post_model)
     def post(self):
         '''Endpoint to send a meme to the backend.
@@ -77,6 +77,10 @@ class MemesRoute(Resource):
         Expects: Meme Owner Name, Valid Image URL, Meme Caption'''
 
         req_data = json.loads(request.data)
+
+        # check if all fields have values and are not empty strings
+        if (not all(param in req_data for param in ['name', 'url', 'caption'])) or not (req_data['name'] and req_data['url'] and req_data['caption']):
+            return make_response(jsonify({'msg': 'Enter values for all: name, url, caption'}), 400)
 
         # validate content at url is image
         validation_status, validation_response = validate_image_url(
