@@ -3,6 +3,7 @@ import axios from "axios";
 import Avatar from "react-avatar";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import timeSince from "../utils/timeSince";
 
 function ImageGrid() {
   const [memeData, setmemeData] = useState([]);
@@ -12,45 +13,6 @@ function ImageGrid() {
       setmemeData(resp.data);
     });
   }, []);
-
-  const timeSince = (date) => {
-    var seconds = Math.floor((new Date() - date) / 1000);
-    var intervalType;
-
-    var interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) {
-      intervalType = "year";
-    } else {
-      interval = Math.floor(seconds / 2592000);
-      if (interval >= 1) {
-        intervalType = "month";
-      } else {
-        interval = Math.floor(seconds / 86400);
-        if (interval >= 1) {
-          intervalType = "day";
-        } else {
-          interval = Math.floor(seconds / 3600);
-          if (interval >= 1) {
-            intervalType = "hour";
-          } else {
-            interval = Math.floor(seconds / 60);
-            if (interval >= 1) {
-              intervalType = "minute";
-            } else {
-              interval = seconds;
-              intervalType = "second";
-            }
-          }
-        }
-      }
-    }
-
-    if (interval > 1 || interval === 0) {
-      intervalType += "s";
-    }
-
-    return interval + " " + intervalType;
-  };
 
   return (
     <div className="image-grid">
