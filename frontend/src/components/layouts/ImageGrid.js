@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Avatar from "react-avatar";
 import Container from "react-bootstrap/Container";
-import Card from "react-bootstrap/Card";
-import timeSince from "../utils/timeSince";
+import Posts from "./Posts";
 
 function ImageGrid() {
   const [memeData, setmemeData] = useState([]);
@@ -20,7 +18,13 @@ function ImageGrid() {
         {memeData &&
           memeData.map((meme) => (
             <div key={meme._id["$oid"]}>
-              <Card className="image-grid__card">
+              <Posts
+                memeName={meme.name}
+                memeUrl={meme.url}
+                memeCaption={meme.caption}
+                memeUpdatedTime={new Date(meme.updated["$date"])}
+              />
+              {/* <Card className="image-grid__card">
                 <Card.Title className="image-grid__card_caption">
                   {meme.caption}
                 </Card.Title>
@@ -41,7 +45,7 @@ function ImageGrid() {
                     Uploaded {timeSince(new Date(meme.updated["$date"]))} ago
                   </small>
                 </Card.Footer>
-              </Card>
+              </Card> */}
               <br />
             </div>
           ))}

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import ImageGrid from "./components/layouts/ImageGrid";
-import Button from "react-bootstrap/Button";
 
 function App() {
+  const [showFormModal, setshowFormModal] = useState(false);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -17,19 +19,18 @@ function App() {
   return (
     <div className="App">
       {/* Header */}
-      <Header />
+      <Header
+        showFormModal={showFormModal}
+        setshowFormModal={setshowFormModal}
+      />
       <br />
-      {/* XMeme Jumbotron */}
-      {/* <Jumbotron fluid className="App__jumbotron">
-        <Container className="App__jumbotron_container">
-          <h1>XMeme</h1>
-          <p>The Best Meme Directory</p>
-        </Container>
-      </Jumbotron> */}
+      {/* Form Model */}
+
       {/* Image Grid */}
       <ImageGrid />
-
+      {/* Back to top Button */}
       <Button onClick={() => scrollToTop()}>Go Back to Top</Button>
+      {/* Footer */}
       <Footer />
     </div>
   );

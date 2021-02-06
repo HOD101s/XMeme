@@ -7,8 +7,9 @@ import Badge from "react-bootstrap/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../static/images/logo192.png";
+import FormModal from "./FormModal";
 
-function Header() {
+function Header(props) {
   return (
     <div className="header">
       <Navbar
@@ -54,7 +55,10 @@ function Header() {
                 </Button>{" "}
               </Nav.Link>
               <Nav.Link>
-                <Button variant="outline-primary">
+                <Button
+                  onClick={() => props.setshowFormModal(true)}
+                  variant="outline-primary"
+                >
                   Add Meme <FontAwesomeIcon icon={faPlus} size="xs" />
                 </Button>{" "}
               </Nav.Link>
@@ -62,6 +66,11 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      <FormModal
+        showFormModal={props.showFormModal}
+        setshowFormModal={props.setshowFormModal}
+      />
     </div>
   );
 }
