@@ -27,13 +27,13 @@ xdao = XmemeDb()
 
 # Flask Restx Request Parsers
 # /memes POST parameters
-memes_post = reqparse.RequestParser(bundle_errors=True)
-memes_post.add_argument(
-    'name', type=str, required=True)
-memes_post.add_argument(
-    'url', type=str, required=True)
-memes_post.add_argument(
-    'caption', type=str, required=True)
+# memes_post = reqparse.RequestParser(bundle_errors=True)
+# memes_post.add_argument(
+#     'name', type=str, required=True)
+# memes_post.add_argument(
+#     'url', type=str, required=True)
+# memes_post.add_argument(
+#     'caption', type=str, required=True)
 
 
 # Flask Restx models
@@ -56,6 +56,11 @@ memes_update_model = api.model('Memes update Input', {
     'caption': fields.String,
     'url': fields.String
 })
+memes_post_model = api.model('Memes post Input', {
+    'name': fields.String,
+    'caption': fields.String,
+    'url': fields.String
+})
 
 
 # ENDPOINTS
@@ -63,27 +68,30 @@ memes_update_model = api.model('Memes update Input', {
 @api.route('/memes')
 class MemesRoute(Resource):
     @api.doc(responses={422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
-    @ api.doc(params={'name': "Meme Owner's Name",  'url': "Meme image URL", 'caption': "meme caption"})
-    @api.expect(memes_post)
+    @api.expect(memes_post_model)
     def post(self):
         '''Endpoint to send a meme to the backend.
         Returns: Unique ID for the uploaded meme.
         Expects: Meme Owner Name, Valid Image URL, Meme Caption'''
 
+        req_data = json.loads(request.data)
+        print(req_data)
+        print(req_data['name'])
+
         # validate content at url is image
         validation_status, validation_response = validate_image_url(
-            request.args.get('url'))
+            req_data['url'])
         if not validation_status:
             return validation_response
 
         # check if entry has already been made
-        if xdao.count_meme_documents(request.args.get('name'), request.args.get('url'), request.args.get('caption')) > 0:
+        if xdao.count_meme_documents(req_data['name'], req_data['url'], req_data['caption']) > 0:
             return make_response(jsonify({'msg': 'Entry already exists'}), 409)
 
         try:
             # insert record into db
-            insert_info = xdao.insert_meme(request.args.get(
-                'name'), request.args.get('url'), request.args.get('caption'))
+            insert_info = xdao.insert_meme(
+                req_data['name'], req_data['url'], req_data['caption'])
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -97,7 +105,8 @@ class MemesRoute(Resource):
         '''Endpoint to fetch the latest 100 memes'''
         try:
             # Get latest 100 memes from db
-            meme_data = xdao.find_memes(sort=[('created', 1)], limit=100)
+            meme_data = xdao.find_memes(
+                sort=[('created', 1)], limit=100)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
