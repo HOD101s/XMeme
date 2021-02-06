@@ -3,6 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../static/images/logo192.png";
@@ -22,15 +23,21 @@ function Header() {
             />{" "}
             XMeme
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
+            <Badge
+              onClick={() => {
+                window.open("http://manasacharya.ml/");
+                window.focus();
+              }}
+              pill
+              variant="dark"
+            >
+              by Manas Acharya
+            </Badge>
             <Nav className="mr-auto"></Nav>
             <Nav>
-              <Nav.Link href="http://manasacharya.ml/" target="_blank">
-                <Button variant="outline-primary">
-                  Manas Acharya <FontAwesomeIcon icon={faExternalLinkAlt} />
-                </Button>
-              </Nav.Link>{" "}
               <Nav.Link
                 href="https://xmeme-manas-api.herokuapp.com/swagger-ui/"
                 target="_blank"
