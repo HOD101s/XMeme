@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Posts from "./Posts";
+import Footer from "./Footer";
 
 function ImageGrid() {
   // Generates POST and fetches data from db with axios
@@ -31,6 +32,7 @@ function ImageGrid() {
             </div>
           ))}
       </Container>
+      <Footer />
     </div>
   );
 }

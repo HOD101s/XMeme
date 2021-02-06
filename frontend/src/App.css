@@ -9,6 +9,7 @@ body {
 .header {
   border-bottom: 1px solid lightgray;
   background-color: white;
+  margin-bottom: 1.5em;
 }
 
 .image-grid__card img {
@@ -33,16 +34,67 @@ body {
   align-items: center;
 }
 
-.footer {
-  border-top: 1px solid lightgray;
-  background-color: white;
-  margin-top: 1em;
+.image-grid__card_edit {
+  margin-left: 1em;
+}
+
+.reactLinkHome {
+  text-decoration: None;
+  background: -webkit-linear-gradient(
+    to right,
+    #8a2387,
+    #e94057,
+    #f27121
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #8a2387,
+    #e94057,
+    #f27121
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reactLinkHome:hover {
+  text-decoration: None;
+  background: -webkit-linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reactLinkContributors {
+  text-decoration: None;
+  color: red;
+}
+
+.reactLinkContributors:hover {
+  text-decoration: None;
+  color: white;
 }
 
 .footer__container {
   display: flex;
 }
 
-.image-grid__card_edit {
-  margin-left: 1em;
+.footer {
+  position: inherit;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  background-color: white;
 }

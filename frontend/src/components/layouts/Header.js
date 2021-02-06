@@ -4,8 +4,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExternalLinkAlt,
+  faPlus,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../../static/images/logo192.png";
 import FormModal from "./FormModal";
 
@@ -29,7 +34,9 @@ function Header(props) {
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            XMeme
+            <Link className="reactLinkHome" to="/">
+              XMeme
+            </Link>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -46,6 +53,14 @@ function Header(props) {
             </Badge>
             <Nav className="mr-auto"></Nav>
             <Nav>
+              <Nav.Link>
+                <Button variant="outline-danger">
+                  <Link className="reactLinkContributors" to="/contributors">
+                    Community{" "}
+                  </Link>
+                  <FontAwesomeIcon icon={faUsers} />
+                </Button>{" "}
+              </Nav.Link>
               <Nav.Link
                 href="https://xmeme-manas-api.herokuapp.com/swagger-ui/"
                 target="_blank"

@@ -101,7 +101,7 @@ function EditMemeModal(props) {
           </Form>
 
           <Form.Label>Post Preview</Form.Label>
-          {/* PREVIEW */}
+          {/* Post Preview: Cannot use Posts component due to props loop */}
           <Container className="text-center">
             <Card className="image-grid__card">
               <Card.Title className="image-grid__card_caption">
