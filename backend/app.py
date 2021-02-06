@@ -77,8 +77,6 @@ class MemesRoute(Resource):
         Expects: Meme Owner Name, Valid Image URL, Meme Caption'''
 
         req_data = json.loads(request.data)
-        print(req_data)
-        print(req_data['name'])
 
         # validate content at url is image
         validation_status, validation_response = validate_image_url(
