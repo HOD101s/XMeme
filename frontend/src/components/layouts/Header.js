@@ -10,8 +10,8 @@ import logo from "../../static/images/logo192.png";
 
 function Header() {
   return (
-    <div>
-      <Navbar collapseOnSelect expand="lg" bg="light" sticky="top">
+    <div className="header">
+      <Navbar collapseOnSelect expand="lg" sticky="top">
         <Container>
           <Navbar.Brand href="#home">
             <img
