@@ -3,6 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Badge from "react-bootstrap/Badge";
 import logo from "../../static/images/logo192.png";
+import ScrollToTopButton2 from "./ScrollToTopButton2";
 
 function Footer() {
   // Returns XMeme footer
@@ -25,6 +26,7 @@ function Footer() {
             />{" "}
             XMeme
           </Navbar.Brand>
+          <ScrollToTopButton2 />
           <Badge
             onClick={() => {
               window.open("http://manasacharya.ml/");
