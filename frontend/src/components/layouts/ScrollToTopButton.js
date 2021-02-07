@@ -1,19 +1,76 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import Flip from "react-reveal/Flip";
 
-function ScrollToTopButton() {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+// source https://codepen.io/Qbrid/pen/GjVvwL
+// Original Updates toggle visibility
+class ScrollToTopButton extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      intervalId: 0,
+      is_visible: false,
+    };
+  }
+
+  componentDidMount() {
+    var scrollComponent = this;
+    document.addEventListener("scroll", function (e) {
+      scrollComponent.toggleVisibility();
     });
-  };
-  return (
-    <div>
-      {/* Back to top Button */}
-      <Button onClick={() => scrollToTop()}>Go Back to Top</Button>
-    </div>
-  );
+  }
+
+  scrollStep() {
+    if (window.pageYOffset === 0) {
+      clearInterval(this.state.intervalId);
+    }
+    window.scroll(0, window.pageYOffset - this.props.scrollStepInPx);
+  }
+
+  scrollToTop() {
+    let intervalId = setInterval(
+      this.scrollStep.bind(this),
+      this.props.delayInMs
+    );
+    this.setState({ intervalId: intervalId });
+  }
+
+  toggleVisibility() {
+    if (window.pageYOffset > 300 && window.innerWidth >= 760) {
+      this.setState({
+        is_visible: true,
+      });
+    } else {
+      this.setState({
+        is_visible: false,
+      });
+    }
+  }
+
+  render() {
+    const { is_visible } = this.state;
+    return (
+      <>
+        {is_visible && (
+          <Flip bottom>
+            <button
+              title="Back to top"
+              className="scroll"
+              onClick={() => {
+                this.scrollToTop();
+              }}
+            >
+              <span className="arrow-up">
+                <FontAwesomeIcon icon={faAngleUp} />
+              </span>
+            </button>
+          </Flip>
+        )}
+      </>
+    );
+  }
 }
 
 export default ScrollToTopButton;

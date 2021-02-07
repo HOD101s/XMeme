@@ -22,20 +22,21 @@ body {
   font-weight: normal;
 }
 
-.image-grid__card_caption {
-  display: flex;
-  justify-content: center;
-  padding: 0.5em;
-  background-color: #fafafa;
-  border-bottom: 1px solid lightgray;
-}
-
 .image-grid__card_name {
   align-items: center;
 }
 
 .image-grid__card_edit {
   margin-left: 1em;
+  margin-right: -1em;
+}
+
+.image-grid__card_caption {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+  background-color: #fafafa;
+  border-bottom: 1px solid lightgray;
 }
 
 .reactLinkHome {
@@ -108,4 +109,26 @@ body {
 
 .contributorsBadgeHeaderWrap {
   margin: 0.3em;
+}
+
+.scroll {
+  /* opacity: 0.3; */
+  /* background-color: aqua; */
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 5px;
+  border: none;
+  z-index: 99;
+}
+
+.arrow-up {
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: -6px;
 }

@@ -49,12 +49,15 @@ function Header(props) {
               pill
               variant="dark"
             >
-              by Manas Acharya
+              built by Manas Acharya
             </Badge>
             <Nav className="mr-auto"></Nav>
             <Nav>
               <Nav.Link>
-                <Button variant="outline-danger">
+                <Button
+                  className="reactLinkContributorsButton"
+                  variant="outline-danger"
+                >
                   <Link className="reactLinkContributors" to="/contributors">
                     Community{" "}
                   </Link>

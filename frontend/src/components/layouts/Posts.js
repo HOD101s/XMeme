@@ -31,10 +31,10 @@ function Posts(props) {
         <Card.Body>
           <Card.Text className="image-grid__card_name">
             <Avatar
-              name={props.memeName}
               size="25"
               round={true}
               textSizeRatio={1.2}
+              name={props.memeName}
             />{" "}
             {props.memeName}
           </Card.Text>
