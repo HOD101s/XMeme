@@ -6,6 +6,7 @@ import Header from "./components/layouts/Header";
 import ImageGrid from "./components/layouts/ImageGrid";
 import Contributors from "./components/layouts/Contributors";
 import ScrollToTopButton from "./components/layouts/ScrollToTopButton";
+import Page404 from "./components/layouts/Page404";
 
 function App() {
   const [showFormModal, setshowFormModal] = useState(false);
@@ -22,6 +23,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={ImageGrid} />
           <Route path="/contributors" component={Contributors} />
+          <Route path="" component={Page404} />
         </Switch>
       </div>
     </Router>
