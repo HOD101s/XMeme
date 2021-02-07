@@ -84,6 +84,7 @@ class MemesRoute(Resource):
         if (not all(param in req_data for param in ['name', 'url', 'caption'])) or not (req_data['name'] and req_data['url'] and req_data['caption']):
             return make_response(jsonify({'msg': 'Enter values for all: name, url, caption'}), 400)
 
+        # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
         # validate content at url is image
         validation_status, validation_response = validate_image_url(
             req_data['url'])
@@ -173,6 +174,7 @@ class MemesIDRoutes(Resource):
         if caption == meme_data[0]['caption'] and url == meme_data[0]['url']:
             return make_response(jsonify({'msg': 'Field values identical to original meme data'}), 409)
 
+        # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
         # validate content at url is image if new url is passed
         if url != meme_data[0]['url']:
             validation_status, validation_response = validate_image_url(url)
