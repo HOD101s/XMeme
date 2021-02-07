@@ -31,7 +31,7 @@ function FormModal(props) {
     }
 
     try {
-      await axios.post("https://xmeme-manas-api.herokuapp.com/memes", {
+      await axios.post(`${process.env.REACT_APP_XMEME_SERVER}/memes`, {
         name: memeName,
         url: memeUrl,
         caption: memeCaption,

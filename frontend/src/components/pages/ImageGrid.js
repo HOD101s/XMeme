@@ -10,7 +10,7 @@ function ImageGrid() {
   const [memeData, setmemeData] = useState(false);
 
   useEffect(() => {
-    axios.get("https://xmeme-manas-api.herokuapp.com/memes").then((resp) => {
+    axios.get(`${process.env.REACT_APP_XMEME_SERVER}/memes`).then((resp) => {
       setmemeData(resp.data);
     });
   }, []);

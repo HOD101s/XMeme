@@ -65,7 +65,7 @@ function Header(props) {
                 </Button>{" "}
               </Nav.Link>
               <Nav.Link
-                href="https://xmeme-manas-api.herokuapp.com/swagger-ui/"
+                href={`${process.env.REACT_APP_XMEME_SERVER}/swagger-ui/`}
                 target="_blank"
               >
                 <Button variant="outline-success">

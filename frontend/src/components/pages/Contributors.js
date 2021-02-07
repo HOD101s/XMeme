@@ -10,7 +10,7 @@ function Contributors() {
 
   useEffect(() => {
     axios
-      .get("https://xmeme-manas-api.herokuapp.com/contributors")
+      .get(`${process.env.REACT_APP_XMEME_SERVER}/contributors`)
       .then((resp) => {
         setownerNameData(resp.data);
       });

@@ -39,7 +39,7 @@ function EditMemeModal(props) {
 
     try {
       await axios.patch(
-        `https://xmeme-manas-api.herokuapp.com/memes/${props.memeId}`,
+        `${process.env.REACT_APP_XMEME_SERVER}/memes/${props.memeId}`,
         updateObj
       );
       //   Change DOM values instead of reload
