@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import Posts from "./Posts";
 import Footer from "./Footer";
 
 function ImageGrid() {
   // Generates POST and fetches data from db with axios
-  const [memeData, setmemeData] = useState([]);
+  const [memeData, setmemeData] = useState(false);
 
   useEffect(() => {
     axios.get("https://xmeme-manas-api.herokuapp.com/memes").then((resp) => {
@@ -16,7 +17,8 @@ function ImageGrid() {
 
   return (
     <div className="image-grid">
-      <Container>
+      <Container style={{ minHeight: "100vh" }}>
+        {!memeData && <Spinner animation="border" variant="success" />}
         {memeData &&
           memeData.map((meme) => (
             <div key={meme._id["$oid"]}>

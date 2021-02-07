@@ -11,7 +11,7 @@ function Footer() {
     <div className="footer">
       <Navbar
         collapseOnSelect
-        className="header_navbar"
+        className="footer_navbar"
         expand="lg"
         sticky="bottom"
       >

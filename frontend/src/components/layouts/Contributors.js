@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import Footer from "./Footer";
 
 function Contributors() {
-  const [ownerNameData, setownerNameData] = useState([]);
+  const [ownerNameData, setownerNameData] = useState(false);
 
   useEffect(() => {
     axios
@@ -18,7 +20,13 @@ function Contributors() {
   return (
     <div>
       <h1>Meet Our XMeme Community</h1>
-      <Container className="contributorsBadgeContainer">
+      <h6>👩‍💻❤😎👨‍💻</h6>
+      <br />
+      {!ownerNameData && <Spinner animation="border" variant="success" />}
+      <Container
+        className="contributorsBadgeContainer"
+        style={{ minHeight: "75vh" }}
+      >
         {ownerNameData &&
           ownerNameData.map((name, id) => (
             <>
@@ -30,6 +38,7 @@ function Contributors() {
             </>
           ))}
       </Container>
+      <Footer />
     </div>
   );
 }
