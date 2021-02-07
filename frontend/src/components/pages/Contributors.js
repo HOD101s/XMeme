@@ -20,7 +20,7 @@ function Contributors() {
   return (
     <div>
       <h1>Meet Our XMeme Community</h1>
-      <h6>👩‍💻❤😎👨‍💻</h6>
+      <h6>👩‍💻🤖❤😎🐱‍🏍🙌👨‍💻</h6>
       <br />
       {!ownerNameData && <Spinner animation="border" variant="success" />}
       <Container
