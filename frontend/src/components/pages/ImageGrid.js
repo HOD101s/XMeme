@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
-import Posts from "./Posts";
-import Footer from "./Footer";
+import Posts from "../layouts/Posts";
+import Footer from "../layouts/Footer";
 
 function ImageGrid() {
   // Generates POST and fetches data from db with axios

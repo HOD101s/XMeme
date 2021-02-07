@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
 import Header from "./components/layouts/Header";
-import ImageGrid from "./components/layouts/ImageGrid";
-import Contributors from "./components/layouts/Contributors";
+import ImageGrid from "./components/pages/ImageGrid";
+import Contributors from "./components/pages/Contributors";
 import ScrollToTopButton from "./components/layouts/ScrollToTopButton";
-import Page404 from "./components/layouts/Page404";
+import Page404 from "./components/pages/Page404";
 
 function App() {
   const [showFormModal, setshowFormModal] = useState(false);

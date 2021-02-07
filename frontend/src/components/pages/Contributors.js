@@ -3,7 +3,7 @@ import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
-import Footer from "./Footer";
+import Footer from "../layouts/Footer";
 
 function Contributors() {
   const [ownerNameData, setownerNameData] = useState(false);
