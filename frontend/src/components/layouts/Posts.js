@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar";
 import Card from "react-bootstrap/Card";
-import timeSince from "../utils/timeSince";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import EditMemeModal from "./EditMemeModal";
+import timeSince from "../utils/timeSince";
 
 function Posts(props) {
   const [showEdit, setshowEdit] = useState(false);

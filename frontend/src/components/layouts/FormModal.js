@@ -5,9 +5,9 @@ import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
-import validUrl from "../utils/validUrl";
-import axios from "axios";
 import Avatar from "react-avatar";
+import axios from "axios";
+import validUrl from "../utils/validUrl";
 import timeSince from "../utils/timeSince";
 
 function FormModal(props) {

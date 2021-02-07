@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
+import React, { useState } from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/layouts/Header";
 import ImageGrid from "./components/pages/ImageGrid";
 import Contributors from "./components/pages/Contributors";

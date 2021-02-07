@@ -11,8 +11,8 @@ import {
   faPlus,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../static/images/logo192.png";
 import FormModal from "./FormModal";
+import logo from "../../static/images/logo192.png";
 
 function Header(props) {
   // Returns XMeme Navbar header
