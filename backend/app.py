@@ -14,8 +14,6 @@ from utils.image_url_validation import validate_image_url
 # Init flask app
 app = Flask(__name__)
 cors = CORS(app)
-# Secret_key for jwt
-app.config['SECRET_KEY'] = os.environ.get('XMEME_JWT_SECRET')
 app.config['RESTX_MASK_HEADER'] = None
 app.config['RESTX_MASK_SWAGGER'] = False
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -214,4 +212,4 @@ def resource_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    app.run(port=8081)
