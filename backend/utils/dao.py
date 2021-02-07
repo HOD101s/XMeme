@@ -23,13 +23,23 @@ class XmemeDb:
 
     def insert_meme(self, name, url, caption):
         '''Insert meme document in Db'''
-        return self.db.memes.insert_one({
+        dtime = datetime.datetime.utcnow()
+        insert_response = self.db.memes.insert_one({
             'name': name,
             'url': url,
             'caption': caption,
-            'created': datetime.datetime.utcnow(),
-            'updated': datetime.datetime.utcnow()
+            'created': dtime,
+            'updated': dtime
         })
+        self.db.logs.insert_one({
+            'action': 'insertion',
+            'meme_id': str(insert_response.inserted_id),
+            'name': name,
+            'url': url,
+            'caption': caption,
+            'log_time': dtime,
+        })
+        return insert_response
 
     def find_memes(self, sort=[], skip=0, limit=100):
         '''Fetch memes from db. Apply skip, limit and sort operations'''
@@ -53,6 +63,12 @@ class XmemeDb:
         self.db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
             '$set': _set
         }, upsert=upsert)
+        self.db.logs.insert_one({
+            'action': 'update',
+            'meme_id': objectid.ObjectId(_id),
+            'log_time': datetime.datetime.utcnow(),
+            'update_fields': _set
+        })
 
     def get_contributors(self):
         '''Get all meme Owners'''
