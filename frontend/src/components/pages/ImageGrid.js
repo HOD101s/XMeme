@@ -21,12 +21,12 @@ function ImageGrid() {
         {!memeData && <Spinner animation="border" variant="success" />}
         {memeData &&
           memeData.map((meme) => (
-            <div key={meme._id["$oid"]}>
+            <div key={meme.id}>
               <Posts
                 memeName={meme.name}
                 memeUrl={meme.url}
                 memeCaption={meme.caption}
-                memeId={meme._id["$oid"]}
+                memeId={meme.id}
                 memeUpdatedTime={new Date(meme.created["$date"])}
                 canUpdate={true}
               />

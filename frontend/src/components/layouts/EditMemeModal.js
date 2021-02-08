@@ -51,7 +51,7 @@ function EditMemeModal(props) {
       }
       props.setShow(false);
     } catch (e) {
-      if (e.response.data.msg) {
+      if (e.response && e.response.data && e.response.data.msg) {
         error_elem.innerText = e.response.data.msg;
       } else {
         error_elem.innerText = e;

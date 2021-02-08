@@ -41,16 +41,17 @@ class XmemeDb:
         })
         return insert_response
 
-    def find_memes(self, sort=[], skip=0, limit=100):
+    def find_memes(self, skip=0, limit=100):
         '''Fetch memes from db. Apply skip, limit and sort operations'''
-        if sort:
-            return self.db.memes.find().sort(sort).skip(skip).limit(limit)
-        return self.db.memes.find().skip(skip).limit(limit)
+        # if sort:
+        #     print(sort)
+        #     self.db.memes.aggregate([{"$sort": sort}, {"$skip": skip}, {"$limit": limit}, {
+        #                             "$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
+        return self.db.memes.aggregate([{"$sort": {"created": -1}}, {"$limit": limit}, {"$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
 
     def find_memes_by_id(self, _id):
         '''Fetch meme data by id'''
-        return self.db.memes.find_one(
-            {"_id": _id})
+        return self.db.memes.aggregate([{"$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}, {"$match": {"id": _id}}])
 
     def update_meme(self, _id, caption='', url='', upsert=False):
         '''Update meme caption and/or url'''
