@@ -27,13 +27,13 @@ xdao = XmemeDb()
 
 # Flask Restx Request Parsers
 # /memes POST parameters
-# memes_post = reqparse.RequestParser(bundle_errors=True)
-# memes_post.add_argument(
-#     'name', type=str, required=True)
-# memes_post.add_argument(
-#     'url', type=str, required=True)
-# memes_post.add_argument(
-#     'caption', type=str, required=True)
+memes_count = reqparse.RequestParser(bundle_errors=True)
+memes_count.add_argument(
+    'name', type=str)
+memes_count.add_argument(
+    'url', type=str)
+memes_count.add_argument(
+    'caption', type=str)
 
 
 # Flask Restx models
@@ -109,8 +109,12 @@ class MemesRoute(Resource):
     def get(self):
         '''Endpoint to fetch the latest 100 memes'''
         try:
-            # Get latest 100 memes from db
-            meme_data = xdao.find_memes(limit=100)
+            # Get latest 100 memes from db with specified page number
+            skip = int(request.args.get('page')) - \
+                1 if request.args.get('page') and int(
+                    request.args.get('page')) > 0 else 0
+            print(f'SKIPPP {skip}')
+            meme_data = xdao.find_memes(skip=skip*100, limit=100)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -204,11 +208,28 @@ class Contributors(Resource):
         return json.loads(json_util.dumps(contributors_data)), 200
 
 
+@api.route('/memecount')
+@api.doc(responses={200: "Fetched Meme Owner Data", 500: "Internal Server Error"})
+class SubmissionCount(Resource):
+    @api.doc(parser=memes_count)
+    def get(self):
+        '''Get Count of documents by name or url or caption as params'''
+        name = request.args.get('name')
+        url = request.args.get('url')
+        caption = request.args.get('caption')
+        try:
+            resp = xdao.count_meme_documents(name, url, caption)
+            return make_response(jsonify({'count': resp}), 200)
+        except Exception as e:
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
+
 # Flask error handling
+
+
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404
 
 
 if __name__ == "__main__":
-    app.run(port=8081)
+    app.run(debug=True, port=8081)

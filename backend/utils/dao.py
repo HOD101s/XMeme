@@ -17,7 +17,7 @@ class XmemeDb:
             search_object['name'] = name
         if url:
             search_object['url'] = url
-        if name:
+        if caption:
             search_object['caption'] = caption
         return int(self.db.memes.count_documents(search_object))
 
@@ -47,7 +47,7 @@ class XmemeDb:
         #     print(sort)
         #     self.db.memes.aggregate([{"$sort": sort}, {"$skip": skip}, {"$limit": limit}, {
         #                             "$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
-        return self.db.memes.aggregate([{"$sort": {"created": -1}}, {"$limit": limit}, {"$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
+        return self.db.memes.aggregate([{"$sort": {"created": -1}}, {"$skip": skip}, {"$limit": limit}, {"$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
 
     def find_memes_by_id(self, _id):
         '''Fetch meme data by id'''
