@@ -10,7 +10,6 @@ class ScrollToTopButton extends React.Component {
     super();
 
     this.state = {
-      intervalId: 0,
       is_visible: false,
     };
   }
@@ -22,23 +21,18 @@ class ScrollToTopButton extends React.Component {
     });
   }
 
-  scrollStep() {
-    if (window.pageYOffset === 0) {
-      clearInterval(this.state.intervalId);
-    }
-    window.scroll(0, window.pageYOffset - this.props.scrollStepInPx);
-  }
-
   scrollToTop() {
-    let intervalId = setInterval(
-      this.scrollStep.bind(this),
-      this.props.delayInMs
-    );
-    this.setState({ intervalId: intervalId });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   toggleVisibility() {
-    if (window.pageYOffset > 300) {
+    if (
+      window.pageYOffset > 300 &&
+      window.innerHeight + window.scrollY <= document.body.offsetHeight - 20
+    ) {
       this.setState({
         is_visible: true,
       });
