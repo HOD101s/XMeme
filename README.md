@@ -6,9 +6,11 @@ XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https:
 
 **Backend** : Flask (Python)
 
-**Frontend** : ReactJs
+**Frontend** : React
 
-**Deployment**: Heroku (Https) 
+**Database** : MongoDb
+
+**Deployment** : Heroku (Https) 
 
 ## Backend: Flask API
 
@@ -73,13 +75,13 @@ backend
 
 - tests.py : api unit testing
 
-- utils : Utilities
+- utils : Utilities Directory
 
 - dao : Contains Abstraction class for all db operations
 
 - image_url_validation.py : Contains functions for url validation
 
-- Procfile : Heroku deployment
+- Procfile : Heroku deployment file for gunicorn
 
 - requirements.txt : python environment for project
 
@@ -94,3 +96,101 @@ Written unit tests to test major API endpoints with pythons unittest framework. 
 #### <u>Code Formatting</u>
 
 All code written is formatted according to PEP8 standards enforced with the autopep8 code format library.
+
+
+
+## Frontend: React-App
+
+React with its powerful component based system, state handling and virtual dom-rendering engine is one of the best front end frameworks out there and is my choice for this project. Developed with **YARN** as package manager of choice. The frontend is completely **RESPONSIVE** and therefore has smooth UI/UX for mobile users as well.
+
+### Features
+
+- Add Memes with **Post Preview**
+- Edit Memes with **Edit Preview**
+- Edit Meme Data With **No Reloads** for Smooth UX
+- Implemented the legendary UI/UX **Infinite Scrolling** model (Pagination on meme sites is archaic)
+- Contributors Appreciation Page
+- Completely **Responsive Design**
+- Effortless Scroll To Top
+- 404 Page Handling
+- Submission **URL Validation**
+- Display **Time Since Posted**
+
+### Project Structure
+
+```
+frontend
+|   package.json
+|   README.md
+|   yarn.lock
+|   .gitignore
++--- public
+|   | React index.html and favicon related files
++--- src
+|   |   App.css
+|   |   App.js
+|   |   index.css
+|   |   index.js
+|   |   reportWebVitals.js
+|   |
+|   +---components
+|   |   +---layouts
+|   |   |       EditMemeModal.js
+|   |   |       Footer.js
+|   |   |       FormModal.js
+|   |   |       Header.js
+|   |   |       Posts.js
+|   |   |       ScrollToTopButton.js
+|   |   |       ScrollToTopButton2.js
+|   |   |
+|   |   +---pages
+|   |   |       Contributors.js
+|   |   |       ImageGrid.js
+|   |   |       Page404.js
+|   |   |
+|   |   \---utils
+|   |           checkUrlIsImage.js
+|   |           GetMemePagination.js
+|   |           timeSince.js
+|   |           validUrl.js
+|   |
+|   \---static
+|       \---images
+|               logo192.png
+```
+
+#### Modularity:
+
+With the component based development I was able to separate UI elements which enables faster rendering of the site along with rapid development and easier maintenance. 
+
+##### Project Components:-
+
+- layouts: Includes individual elements of page like Header, Footer, etc
+- pages: Includes components that render entire site pages ImageGrid (main app page), Contributors Page and 404 Landing Page
+- utils: Utilities for carrying out repetitive logic and reused react hooks
+
+## Development Environment
+
+#### <u>Code Formatting</u>
+
+Used VSCode plugin Prettier for auto formatting of code thereby having a standardized global format
+
+#### <u>Package Manager</u>
+
+Used [Yarn](https://yarnpkg.com/) to as package manager primarily due to its greater speed compared to npm
+
+#### <u>API Calls</u> 
+
+Used the [Axios](https://yarnpkg.com/package/axios) package with its promise framework being much better and easy to use over fetch api.
+
+
+
+# Database: MongoDb
+
+First choice due to its comfortable document based structure. Used [Pymongo](https://pymongo.readthedocs.io/en/stable/) as client for MongoDb in backend project. Public deployment done on Mongo Atlas Cloud service. 
+
+
+
+
+
+Author: Manas Acharya 
