@@ -35,6 +35,12 @@ memes_count.add_argument(
 memes_count.add_argument(
     'caption', type=str)
 
+get_memes = reqparse.RequestParser(bundle_errors=True)
+get_memes.add_argument(
+    'page', type=str)
+get_memes.add_argument(
+    'limit', type=str)
+
 
 # Flask Restx models
 memes_post_response_model = api.model('Memes Post Response Model', {
@@ -105,16 +111,17 @@ class MemesRoute(Resource):
         return make_response(jsonify(({'id': _id})), 200)
 
     @api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    # @api.marshal_list_with(memes_get_response_model, code=200)
+    @api.doc(parser=get_memes)
     def get(self):
-        '''Endpoint to fetch the latest 100 memes'''
+        '''Endpoint to fetch the latest 100 memes : Optionally can enable pagination by passing page and limit value. Default limit if not passed is taken as 100'''
         try:
-            # Get latest 100 memes from db with specified page number
+            # Get latest memes from db with specified page number and limit
             skip = int(request.args.get('page')) - \
                 1 if request.args.get('page') and int(
                     request.args.get('page')) > 0 else 0
-            print(f'SKIPPP {skip}')
-            meme_data = xdao.find_memes(skip=skip*100, limit=100)
+            limit = int(request.args.get('limit')
+                        ) if request.args.get('limit') else 100
+            meme_data = xdao.find_memes(skip=skip*limit, limit=limit)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
