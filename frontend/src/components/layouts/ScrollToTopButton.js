@@ -51,12 +51,12 @@ class ScrollToTopButton extends React.Component {
           <Flip bottom>
             <button
               title="Back to top"
-              className="scroll"
+              className="scrolltotop__scroll"
               onClick={() => {
                 this.scrollToTop();
               }}
             >
-              <span className="arrow-up">
+              <span className="scrolltotop__arrow-up">
                 <FontAwesomeIcon icon={faAngleUp} />
               </span>
             </button>

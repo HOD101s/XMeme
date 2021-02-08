@@ -35,7 +35,7 @@ function Header(props) {
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            <Link className="reactLinkHome" to="/">
+            <Link className="header__navbar__reactLinkHome" to="/">
               XMeme
             </Link>
           </Navbar.Brand>
@@ -56,10 +56,13 @@ function Header(props) {
             <Nav>
               <Nav.Link>
                 <Button
-                  className="reactLinkContributorsButton"
+                  className="header__navbar__reactLinkContributors"
                   variant="outline-danger"
                 >
-                  <Link className="reactLinkContributors" to="/contributors">
+                  <Link
+                    className="header__navbar__reactLinkContributors"
+                    to="/contributors"
+                  >
                     Community{" "}
                   </Link>
                   <FontAwesomeIcon icon={faUsers} />

@@ -16,11 +16,11 @@ function Posts(props) {
   return (
     <div>
       <Card className="image-grid__card">
-        <Card.Title className="image-grid__card_caption">
+        <Card.Title className="image-grid__card__caption">
           {memeCaptionProp}
           {props.canUpdate && (
             <FontAwesomeIcon
-              className="image-grid__card_edit"
+              className="image-grid__card__edit"
               size="xs"
               icon={faEdit}
               onClick={() => setshowEdit(true)}
@@ -29,7 +29,7 @@ function Posts(props) {
         </Card.Title>
         <Card.Img variant="top" src={memeUrlProp} />
         <Card.Body>
-          <Card.Text className="image-grid__card_name">
+          <Card.Text className="image-grid__card__name">
             <Avatar
               size="25"
               round={true}

@@ -30,7 +30,7 @@ function Contributors() {
         {ownerNameData &&
           ownerNameData.map((name, id) => (
             <>
-              <h4 className="contributorsBadgeHeaderWrap">
+              <h4 className="contributorsBadgeContainer__BadgeHeaderWrap">
                 <Badge variant={badge[id % badge.length]}>
                   {name._id} <Badge variant="light">{name.count}</Badge>
                 </Badge>{" "}
