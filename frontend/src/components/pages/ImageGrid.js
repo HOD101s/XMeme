@@ -29,7 +29,6 @@ function ImageGrid() {
   return (
     <div className="image-grid">
       <Container style={{ minHeight: "100vh" }}>
-        {loading && <Spinner animation="border" variant="success" />}
         {memeData.length > 0 &&
           memeData.map((meme, index) => {
             if (memeData.length === index + 1) {
@@ -62,6 +61,7 @@ function ImageGrid() {
               );
             }
           })}
+        {loading && <Spinner animation="border" variant="success" />}
       </Container>
       <Footer />
     </div>
