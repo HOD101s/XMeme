@@ -26,7 +26,7 @@ api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
 xdao = XmemeDb()
 
 # Flask Restx Request Parsers
-# /memes POST parameters
+# /memecount GET Query parameters
 memes_count = reqparse.RequestParser(bundle_errors=True)
 memes_count.add_argument(
     'name', type=str)
@@ -34,7 +34,7 @@ memes_count.add_argument(
     'url', type=str)
 memes_count.add_argument(
     'caption', type=str)
-
+# /memes GET Query parameters
 get_memes = reqparse.RequestParser(bundle_errors=True)
 get_memes.add_argument(
     'page', type=str)
@@ -71,7 +71,7 @@ memes_contributors_model = api.model('Memes Contributors', {
 })
 
 
-# ENDPOINTS
+# API ENDPOINTS
 
 @api.route('/memes')
 class MemesRoute(Resource):
@@ -133,7 +133,7 @@ class MemesRoute(Resource):
 class MemesIDRoutes(Resource):
     @api.doc(responses={404: "Meme with specified ID doesn't exist", 200: "Fetched specified Meme Data", 500: "Internal Server Error"})
     def get(self, _id):
-        '''Endpoint to specify a particular id to fetch a single Meme'''
+        '''Endpoint to fetch a particular Meme with passed ID'''
 
         try:
             # Convert string id to bson Object for mongo
@@ -230,9 +230,8 @@ class SubmissionCount(Resource):
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
+
 # Flask error handling
-
-
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404

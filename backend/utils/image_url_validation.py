@@ -15,6 +15,7 @@ def validate_image_url(url):
     # validate url with regex
     if not re.match(image_url_regex, url):
         return False, make_response(jsonify({'msg': "Invalid Url"}), 422)
+
     # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
     # check if content at url is of image type
     # if not validate_url_content(url):  # meme_data[0]['url']
@@ -23,6 +24,7 @@ def validate_image_url(url):
 
 
 def validate_url_content(url):
+    # Makes a get request to verify content-type header is of image type
     image_formats = ("image/png", "image/jpeg", "image/jpg", "image/gif",
                      "image/apng", "image/avif", "image/jfif", "image/webp")
     resp = requests.head(url)

@@ -26,14 +26,20 @@ api = Api(app, title='Xmeme-Manas-Acharya', doc='/swagger-ui/',
 xdao = XmemeDb()
 
 # Flask Restx Request Parsers
-# /memes POST parameters
-# memes_post = reqparse.RequestParser(bundle_errors=True)
-# memes_post.add_argument(
-#     'name', type=str, required=True)
-# memes_post.add_argument(
-#     'url', type=str, required=True)
-# memes_post.add_argument(
-#     'caption', type=str, required=True)
+# /memecount GET Query parameters
+memes_count = reqparse.RequestParser(bundle_errors=True)
+memes_count.add_argument(
+    'name', type=str)
+memes_count.add_argument(
+    'url', type=str)
+memes_count.add_argument(
+    'caption', type=str)
+# /memes GET Query parameters
+get_memes = reqparse.RequestParser(bundle_errors=True)
+get_memes.add_argument(
+    'page', type=str)
+get_memes.add_argument(
+    'limit', type=str)
 
 
 # Flask Restx models
@@ -65,7 +71,7 @@ memes_contributors_model = api.model('Memes Contributors', {
 })
 
 
-# ENDPOINTS
+# API ENDPOINTS
 
 @api.route('/memes')
 class MemesRoute(Resource):
@@ -105,12 +111,17 @@ class MemesRoute(Resource):
         return make_response(jsonify(({'id': _id})), 200)
 
     @api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    # @api.marshal_list_with(memes_get_response_model, code=200)
+    @api.doc(parser=get_memes)
     def get(self):
-        '''Endpoint to fetch the latest 100 memes'''
+        '''Endpoint to fetch the latest 100 memes : Optionally can enable pagination by passing page and limit value. Default limit if not passed is taken as 100'''
         try:
-            # Get latest 100 memes from db
-            meme_data = xdao.find_memes(limit=100)
+            # Get latest memes from db with specified page number and limit
+            skip = int(request.args.get('page')) - \
+                1 if request.args.get('page') and int(
+                    request.args.get('page')) > 0 else 0
+            limit = int(request.args.get('limit')
+                        ) if request.args.get('limit') else 100
+            meme_data = xdao.find_memes(skip=skip*limit, limit=limit)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -122,7 +133,7 @@ class MemesRoute(Resource):
 class MemesIDRoutes(Resource):
     @api.doc(responses={404: "Meme with specified ID doesn't exist", 200: "Fetched specified Meme Data", 500: "Internal Server Error"})
     def get(self, _id):
-        '''Endpoint to specify a particular id to fetch a single Meme'''
+        '''Endpoint to fetch a particular Meme with passed ID'''
 
         try:
             # Convert string id to bson Object for mongo
@@ -204,6 +215,22 @@ class Contributors(Resource):
         return json.loads(json_util.dumps(contributors_data)), 200
 
 
+@api.route('/memecount')
+@api.doc(responses={200: "Fetched Meme Owner Data", 500: "Internal Server Error"})
+class SubmissionCount(Resource):
+    @api.doc(parser=memes_count)
+    def get(self):
+        '''Get Count of documents by name or url or caption as params'''
+        name = request.args.get('name')
+        url = request.args.get('url')
+        caption = request.args.get('caption')
+        try:
+            resp = xdao.count_meme_documents(name, url, caption)
+            return make_response(jsonify({'count': resp}), 200)
+        except Exception as e:
+            return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
+
+
 # Flask error handling
 @app.errorhandler(404)
 def resource_not_found(e):
@@ -211,4 +238,4 @@ def resource_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(port=8080)
+    app.run(debug=True, port=8080)
