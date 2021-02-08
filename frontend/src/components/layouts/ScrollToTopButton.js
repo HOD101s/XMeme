@@ -38,7 +38,7 @@ class ScrollToTopButton extends React.Component {
   }
 
   toggleVisibility() {
-    if (window.pageYOffset > 300 && window.innerWidth >= 760) {
+    if (window.pageYOffset > 300) {
       this.setState({
         is_visible: true,
       });
