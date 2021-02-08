@@ -9,7 +9,9 @@ const GetMemePagination = (pageNumber) => {
   useEffect(() => {
     setloading(true);
     axios
-      .get(`${process.env.REACT_APP_XMEME_SERVER}/memes?page=${pageNumber}`)
+      .get(
+        `${process.env.REACT_APP_XMEME_SERVER}/memes?page=${pageNumber}&limit=20`
+      )
       .then((resp) => {
         setmemeData((memes) => {
           return [...memes, ...resp.data];
