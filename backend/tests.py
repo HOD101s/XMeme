@@ -31,9 +31,9 @@ class APITests(unittest.TestCase):
 
         # test Valid upload
         # IMPORTANT: REPLACE url param with new image or change owner name
-        name = 'Yolo'
-        url = "https://i.insider.com/5ea9887b0fc63978b759c857?width=700"
-        caption = 'Hey Oh'
+        name = ''
+        url = ""
+        caption = ''
         if name and url and caption:
             response = tester.post(
                 '/memes', json=dict(name=name, url=url, caption=caption))
