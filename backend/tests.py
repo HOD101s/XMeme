@@ -73,7 +73,7 @@ class APITests(unittest.TestCase):
         newurl = "https://static.mommypoppins.com/styles/image620x420/s3/school_meme_3_0.jpg"  # new url
 
         # SET 2
-        # ogcaption = "Meme 103"  # existing caption
+        # ogcaption = "This is weird"  # existing caption
         # ogurl = "https://static.mommypoppins.com/styles/image620x420/s3/school_meme_3_0.jpg"  # existing url
         # newcaption1 = "Is stanley boss?"  # new caption 1
         # newcaption2 = "Stanley is boss"  # new caption 2
