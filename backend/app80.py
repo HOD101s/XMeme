@@ -40,12 +40,10 @@ xdao = XmemeDb()
 memes_post_response_model = api.model('Memes Post Response Model', {
     "id": fields.String,
 })
-mongo_id_model = api.model(
-    'ObjectId Model', {"$oid": fields.String('ObjectId from Mongo')})
 mongo_datetime_model = api.model('Datetime Model', {
                                  "$date": fields.Integer})
 memes_get_response_model = api.model('Memes Get Response Model', {
-    "_id": fields.Nested(mongo_id_model),
+    "id": fields.String,
     "name": fields.String('Meme Owner Name'),
     "url": fields.String,
     "caption": fields.String('Meme Caption'),
@@ -107,13 +105,12 @@ class MemesRoute(Resource):
         return make_response(jsonify(({'id': _id})), 200)
 
     @api.doc(responses={200: "Fetched Meme Data", 500: "Internal Server Error"})
-    @api.marshal_list_with(memes_get_response_model, code=200)
+    # @api.marshal_list_with(memes_get_response_model, code=200)
     def get(self):
         '''Endpoint to fetch the latest 100 memes'''
         try:
             # Get latest 100 memes from db
-            meme_data = xdao.find_memes(
-                sort=[('created', -1)], limit=100)
+            meme_data = xdao.find_memes(limit=100)
         except Exception as e:
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
@@ -130,7 +127,7 @@ class MemesIDRoutes(Resource):
         try:
             # Convert string id to bson Object for mongo
             # if it fails that means passed id didn't conform to mongo ObjectId standard therefore Meme doesn't exist
-            _id = objectid.ObjectId(_id)
+            objectid.ObjectId(_id)
         except Exception as e:
             return make_response(jsonify({'msg': "Meme with specified ID does not exist"}), 404)
 
@@ -160,8 +157,8 @@ class MemesIDRoutes(Resource):
 
         # jsonify response
         req_data = json.loads(request.data)
-        caption = meme_data[0]['caption']
-        url = meme_data[0]['url']
+        caption = meme_data[0][0]['caption']
+        url = meme_data[0][0]['url']
 
         # extract caption and url info for request data
         # assign value if passed value is not empty string or doesn't exist
@@ -171,12 +168,12 @@ class MemesIDRoutes(Resource):
             url = req_data['url']
 
         # check if requested changes are updating to same existing values
-        if caption == meme_data[0]['caption'] and url == meme_data[0]['url']:
+        if caption == meme_data[0][0]['caption'] and url == meme_data[0][0]['url']:
             return make_response(jsonify({'msg': 'Field values identical to original meme data'}), 409)
 
         # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
         # validate content at url is image if new url is passed
-        if url != meme_data[0]['url']:
+        if url != meme_data[0][0]['url']:
             validation_status, validation_response = validate_image_url(url)
             if not validation_status:
                 return validation_response
