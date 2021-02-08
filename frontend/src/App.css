@@ -12,6 +12,33 @@ body {
   margin-bottom: 1.5em;
 }
 
+.header__reloadAnimation {
+  border-radius: 50%;
+}
+
+.header__reloadAnimation:hover {
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 .image-grid__card img {
   width: 100%;
   max-height: 75vh;

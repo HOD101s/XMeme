@@ -10,6 +10,7 @@ import {
   faExternalLinkAlt,
   faPlus,
   faUsers,
+  faRedo,
 } from "@fortawesome/free-solid-svg-icons";
 import FormModal from "./FormModal";
 import logo from "../../static/images/logo192.png";
@@ -79,6 +80,21 @@ function Header(props) {
                   variant="outline-primary"
                 >
                   Add Meme <FontAwesomeIcon icon={faPlus} size="xs" />
+                </Button>{" "}
+              </Nav.Link>
+              <Nav.Link>
+                <Button
+                  variant="outline-warning"
+                  className="header__reloadAnimation"
+                >
+                  {" "}
+                  <FontAwesomeIcon
+                    onClick={() => {
+                      window.location.reload();
+                    }}
+                    icon={faRedo}
+                    size="xs"
+                  />
                 </Button>{" "}
               </Nav.Link>
             </Nav>
