@@ -66,6 +66,31 @@ body {
   border-bottom: 1px solid lightgray;
 }
 
+.image-grid__card__showCommentArrow {
+  margin: 0.5em;
+}
+
+.image-grid__card__showCommentArrow:active {
+  transform: rotate(-90deg);
+
+  /* Legacy vendor prefixes that you probably don't need... */
+
+  /* Safari */
+  -webkit-transform: rotate(90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(90deg);
+
+  /* IE */
+  -ms-transform: rotate(90deg);
+
+  /* Opera */
+  -o-transform: rotate(90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
 .header__navbar__reactLinkHome {
   text-decoration: None;
   background: -webkit-linear-gradient(
@@ -157,4 +182,30 @@ body {
   left: 50%;
   margin-top: -12px;
   margin-left: -5px;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  max-height: 10vh;
+  text-align: left;
+  overflow-y: scroll;
+  -moz-scrollbars: none;
+  -ms-overflow-style: none;
+}
+
+.comments::-webkit-scrollbar {
+  display: none;
+}
+
+.image-grid__card__commentform {
+  min-width: 100%;
+}
+
+.image-grid__card__commentform__FormControl {
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }

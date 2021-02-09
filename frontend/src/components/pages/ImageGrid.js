@@ -39,6 +39,7 @@ function ImageGrid() {
                     memeUrl={meme.url}
                     memeCaption={meme.caption}
                     memeId={meme.id}
+                    memeComments={meme.comments}
                     memeUpdatedTime={new Date(meme.created["$date"])}
                     canUpdate={true}
                   />
@@ -53,6 +54,7 @@ function ImageGrid() {
                     memeUrl={meme.url}
                     memeCaption={meme.caption}
                     memeId={meme.id}
+                    memeComments={meme.comments}
                     memeUpdatedTime={new Date(meme.created["$date"])}
                     canUpdate={true}
                   />
