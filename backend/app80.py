@@ -69,9 +69,14 @@ memes_contributors_model = api.model('Memes Contributors', {
     '_id': fields.String,
     'count': fields.String
 })
-
+memes_comments_model = api.model('Memes Contributors', {
+    '_id': fields.String,
+    'name': fields.String,
+    'comment': fields.String
+})
 
 # API ENDPOINTS
+
 
 @api.route('/memes')
 class MemesRoute(Resource):
@@ -231,11 +236,30 @@ class SubmissionCount(Resource):
             return make_response(jsonify({'msg': 'DB Error', 'exception': str(e)}), 500)
 
 
+@api.route('/addcomment')
+class AddComment(Resource):
+    @api.doc(responses={200: "Added Comment", 500: "Internal Server Error", 400: "Incomplete Data"})
+    @api.expect(memes_comments_model)
+    def post(self):
+        '''Endpoint to post Comments'''
+        req_data = json.loads(request.data)
+
+        # check if all fields have values and are not empty strings
+        if (not all(param in req_data for param in ['name', 'comment', '_id'])) or not (req_data['name'] and req_data['comment'] and req_data['_id']):
+            return make_response(jsonify({'msg': 'Enter values for fields'}), 400)
+
+        response = xdao.add_comment(
+            req_data['_id'], req_data['name'], req_data['comment'])
+
+        return make_response(jsonify({'msg': 'Inserted Comment'}), 200)
+
 # Flask error handling
+
+
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    app.run(port=8080)

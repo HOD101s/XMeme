@@ -29,7 +29,8 @@ class XmemeDb:
             'url': url,
             'caption': caption,
             'created': dtime,
-            'updated': dtime
+            'updated': dtime,
+            'comments': []
         })
         self.db.logs.insert_one({
             'action': 'insertion',
@@ -74,3 +75,15 @@ class XmemeDb:
     def get_contributors(self):
         '''Get all meme Owners'''
         return self.db.memes.aggregate([{"$group": {"_id": "$name", "count": {"$sum": 1}}}])
+
+    def add_comment(self, _id, name, comment):
+        '''Add comment to meme with specified id'''
+        response = self.db.memes.update_one({'_id': objectid.ObjectId(_id)}, {
+                                            '$push': {'comments': {'name': name, 'comment': comment}}})
+        self.db.logs.insert_one({
+            'action': 'comment',
+            'meme_id': objectid.ObjectId(_id),
+            'log_time': datetime.datetime.utcnow(),
+            'comment_data': {'name': name, 'comment': comment}
+        })
+        return response
