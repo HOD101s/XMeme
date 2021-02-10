@@ -72,23 +72,24 @@ body {
 
 .image-grid__card__showCommentArrow:active {
   transform: rotate(-90deg);
-
-  /* Legacy vendor prefixes that you probably don't need... */
-
   /* Safari */
   -webkit-transform: rotate(90deg);
-
   /* Firefox */
   -moz-transform: rotate(90deg);
-
   /* IE */
   -ms-transform: rotate(90deg);
-
   /* Opera */
   -o-transform: rotate(90deg);
-
   /* Internet Explorer */
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.image-grid__card__addCommentButton {
+  margin: 0.5em;
+}
+
+.image-grid__card__editPostButton {
+  margin: 0.5em;
 }
 
 .header__navbar__reactLinkHome {

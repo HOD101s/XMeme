@@ -26,14 +26,6 @@ function Posts(props) {
       <Card className="image-grid__card">
         <Card.Title className="image-grid__card__caption">
           {memeCaptionProp}
-          {props.canUpdate && (
-            <FontAwesomeIcon
-              className="image-grid__card__edit"
-              size="xs"
-              icon={faEdit}
-              onClick={() => setshowEdit(true)}
-            />
-          )}
         </Card.Title>
         <Card.Img
           variant="top"
@@ -64,12 +56,19 @@ function Posts(props) {
             />
           )}
           <FontAwesomeIcon
-            className="image-grid__card__showCommentArrow"
+            className="image-grid__card__addCommentButton"
             icon={faPlus}
             onClick={() => {
               setshowCommentModal((prev) => !prev);
             }}
           />
+          {props.canUpdate && (
+            <FontAwesomeIcon
+              className="image-grid__card__editPostButton"
+              icon={faEdit}
+              onClick={() => setshowEdit(true)}
+            />
+          )}
           {showComments && <Comments comments={commentProp} />}
         </Card.Body>
         <Card.Footer>
