@@ -6,12 +6,15 @@ import Footer from "../layouts/Footer";
 import GetMemePagination from "../utils/GetMemePagination";
 
 function ImageGrid() {
-  // Generates POST and fetches data from db with axios
+  // Populates Mainpage with posts
   const [pageNumber, setpageNumber] = useState(1);
 
   const { loading, memeData, hasMore } = GetMemePagination(pageNumber);
 
+  // Ref for observing last loaded meme
   const observer = useRef();
+
+  // Updates pagination page number to trigger next infinite scroll api call
   const lastMemeRef = useCallback(
     (node) => {
       if (loading) return;
@@ -32,6 +35,7 @@ function ImageGrid() {
         {memeData.length > 0 &&
           memeData.map((meme, index) => {
             if (memeData.length === index + 1) {
+              // Set ref for last loaded meme
               return (
                 <div key={meme.id} ref={lastMemeRef}>
                   <Posts

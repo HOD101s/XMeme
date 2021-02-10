@@ -11,6 +11,7 @@ import validUrl from "../utils/validUrl";
 import timeSince from "../utils/timeSince";
 
 function FormModal(props) {
+  // Add meme form modal
   const [memeName, setmemeName] = useState("");
   const [memeUrl, setmemeUrl] = useState("");
   const [memeCaption, setmemeCaption] = useState("");
@@ -58,6 +59,7 @@ function FormModal(props) {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            {/* Owner Name */}
             <Form.Group controlId="nameForm">
               <Form.Label>Owner Name</Form.Label>
               <Form.Control
@@ -70,7 +72,7 @@ function FormModal(props) {
                 XMeme appreciates Original Posts
               </Form.Text>
             </Form.Group>
-
+            {/* Meme url */}
             <Form.Group controlId="urlForm">
               <Form.Label>Meme URL</Form.Label>
               <Form.Control
@@ -83,7 +85,7 @@ function FormModal(props) {
                 Kindly add a valid image URL
               </Form.Text>
             </Form.Group>
-
+            {/* Meme Caption */}
             <Form.Group controlId="captionForm">
               <Form.Label>Caption</Form.Label>
               <Form.Control

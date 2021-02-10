@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBinoculars } from "@fortawesome/free-solid-svg-icons";
 
 function Page404() {
+  // Renders 404 page
   return (
     <div
       style={{

@@ -16,7 +16,7 @@ import FormModal from "./FormModal";
 import logo from "../../static/images/logo192.png";
 
 function Header(props) {
-  // Returns XMeme Navbar header
+  // Renders XMeme Navbar header
   return (
     <div className="header">
       <Navbar
@@ -54,6 +54,7 @@ function Header(props) {
             </Badge>
             <Nav className="mr-auto"></Nav>
             <Nav>
+              {/* Community Page */}
               <Nav.Link>
                 <Button
                   className="header__navbar__reactLinkContributors"
@@ -68,6 +69,7 @@ function Header(props) {
                   <FontAwesomeIcon icon={faUsers} />
                 </Button>{" "}
               </Nav.Link>
+              {/* Swagger Docs Link */}
               <Nav.Link
                 href={`${process.env.REACT_APP_XMEME_SERVER}/swagger-ui/`}
                 target="_blank"
@@ -77,6 +79,7 @@ function Header(props) {
                   <FontAwesomeIcon icon={faExternalLinkAlt} />
                 </Button>{" "}
               </Nav.Link>
+              {/* Add Meme Button */}
               <Nav.Link>
                 <Button
                   onClick={() => props.setshowFormModal(true)}
@@ -85,6 +88,7 @@ function Header(props) {
                   Add Meme <FontAwesomeIcon icon={faPlus} size="xs" />
                 </Button>{" "}
               </Nav.Link>
+              {/* Page Reload */}
               <Nav.Link>
                 <Button
                   variant="outline-warning"

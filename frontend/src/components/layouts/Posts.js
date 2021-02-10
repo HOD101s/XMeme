@@ -13,6 +13,8 @@ import Comments from "./Comments";
 import timeSince from "../utils/timeSince";
 
 function Posts(props) {
+  // Component Model for Posts
+
   const [showEdit, setshowEdit] = useState(false);
   const [showComments, setshowComments] = useState(false);
   const [showCommentModal, setshowCommentModal] = useState(false);
@@ -20,7 +22,6 @@ function Posts(props) {
   const [memeCaptionProp, setmemeCaptionProp] = useState(props.memeCaption);
   const [commentProp, setcommentProp] = useState(props.memeComments);
 
-  // Returns Individual post structure
   return (
     <div>
       <Card className="image-grid__card">
@@ -90,14 +91,12 @@ function Posts(props) {
         />
       )}
 
-      {showCommentModal && (
-        <CommentMemeModal
-          show={showCommentModal}
-          setShow={setshowCommentModal}
-          setComments={setcommentProp}
-          memeId={props.memeId}
-        />
-      )}
+      <CommentMemeModal
+        show={showCommentModal}
+        setShow={setshowCommentModal}
+        setComments={setcommentProp}
+        memeId={props.memeId}
+      />
     </div>
   );
 }

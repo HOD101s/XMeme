@@ -6,6 +6,9 @@ import axios from "axios";
 import Footer from "../layouts/Footer";
 
 function Contributors() {
+  // Renders Contributors page
+
+  // ownerNameData to store contributor information
   const [ownerNameData, setownerNameData] = useState(false);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import ScrollToTopButton2 from "./ScrollToTopButton2";
 import logo from "../../static/images/logo192.png";
 
 function Footer() {
-  // Returns XMeme footer
+  // Renders XMeme footer
   return (
     <div className="footer">
       <Navbar

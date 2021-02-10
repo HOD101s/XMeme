@@ -6,9 +6,14 @@ import Badge from "react-bootstrap/Badge";
 import axios from "axios";
 
 function CommentMemeModal(props) {
+  // Meme Comment Form Modal
+
+  // commentText: comment
+  // commentName: commenter username
   const [commentText, setcommentText] = useState("");
   const [commentName, setcommentName] = useState("");
 
+  // validate comment data and send to api
   const uploadComment = async () => {
     let error_elem = document.getElementById("error_msg");
     error_elem.innerText = "";
@@ -23,7 +28,7 @@ function CommentMemeModal(props) {
         name: commentName,
         comment: commentText,
       });
-      //   Change DOM values instead of reload
+      //   Change DOM state values instead of reload
       let commentObj = { name: commentName, comment: commentText };
       props.setComments((prev) => [...prev, commentObj]);
       props.setShow(false);
@@ -50,6 +55,7 @@ function CommentMemeModal(props) {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            {/* Get Username */}
             <Form.Group controlId="urlForm">
               <Form.Label>Username</Form.Label>
               <Form.Control
@@ -59,7 +65,7 @@ function CommentMemeModal(props) {
               />
               <Form.Text className="text-muted">Username for comment</Form.Text>
             </Form.Group>
-
+            {/* Get Caption */}
             <Form.Group controlId="captionForm">
               <Form.Label>Comment</Form.Label>
               <Form.Control

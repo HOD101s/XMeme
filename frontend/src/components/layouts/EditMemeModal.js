@@ -11,9 +11,13 @@ import validUrl from "../utils/validUrl";
 import timeSince from "../utils/timeSince";
 
 function EditMemeModal(props) {
+  // Edit meme form modal
+
+  // Meme Url and Caption states
   const [memeUrl, setmemeUrl] = useState(props.memeUrl);
   const [memeCaption, setmemeCaption] = useState(props.memeCaption);
 
+  // validates edit data and sends updates to api
   const editMeme = async () => {
     let error_elem = document.getElementById("error_msg");
     error_elem.innerText = "";
@@ -75,6 +79,7 @@ function EditMemeModal(props) {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            {/* Edited url */}
             <Form.Group controlId="urlForm">
               <Form.Label>Meme URL</Form.Label>
               <Form.Control
@@ -86,7 +91,7 @@ function EditMemeModal(props) {
                 Kindly add a valid image URL
               </Form.Text>
             </Form.Group>
-
+            {/* Edited Caption */}
             <Form.Group controlId="captionForm">
               <Form.Label>Caption</Form.Label>
               <Form.Control

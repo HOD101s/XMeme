@@ -2,6 +2,7 @@ import React from "react";
 import Avatar from "react-avatar";
 
 function Comments(props) {
+  // Renders Comments
   return (
     <div className="comments">
       {props.comments &&
