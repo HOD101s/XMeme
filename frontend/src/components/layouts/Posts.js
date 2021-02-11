@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar";
 import Card from "react-bootstrap/Card";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
@@ -48,27 +50,45 @@ function Posts(props) {
             {props.memeName}
           </Card.Text>
           {commentProp.length > 0 && (
-            <FontAwesomeIcon
-              className="image-grid__card__showCommentArrow"
-              icon={faArrowRight}
-              onClick={() =>
-                setshowComments((prevShowSomments) => !prevShowSomments)
-              }
-            />
+            <OverlayTrigger
+              placement="left"
+              delay={{ show: 250, hide: 400 }}
+              overlay={<Tooltip id="viewCommentTooltip">View Comments</Tooltip>}
+            >
+              <FontAwesomeIcon
+                className="image-grid__card__showCommentArrow"
+                icon={faArrowRight}
+                onClick={() =>
+                  setshowComments((prevShowSomments) => !prevShowSomments)
+                }
+              />
+            </OverlayTrigger>
           )}
-          <FontAwesomeIcon
-            className="image-grid__card__addCommentButton"
-            icon={faPlus}
-            onClick={() => {
-              setshowCommentModal((prev) => !prev);
-            }}
-          />
-          {props.canUpdate && (
+          <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 250, hide: 400 }}
+            overlay={<Tooltip id="addCommentTooltip">Add Comment</Tooltip>}
+          >
             <FontAwesomeIcon
-              className="image-grid__card__editPostButton"
-              icon={faEdit}
-              onClick={() => setshowEdit(true)}
+              className="image-grid__card__addCommentButton"
+              icon={faPlus}
+              onClick={() => {
+                setshowCommentModal((prev) => !prev);
+              }}
             />
+          </OverlayTrigger>
+          {props.canUpdate && (
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 250, hide: 400 }}
+              overlay={<Tooltip id="editPostTooltip">Edit Post</Tooltip>}
+            >
+              <FontAwesomeIcon
+                className="image-grid__card__editPostButton"
+                icon={faEdit}
+                onClick={() => setshowEdit(true)}
+              />
+            </OverlayTrigger>
           )}
           {showComments && <Comments comments={commentProp} />}
         </Card.Body>
