@@ -67,6 +67,7 @@ body {
 }
 
 .image-grid__card__showCommentArrow {
+  opacity: 0.8;
   margin: 0.5em;
 }
 
@@ -84,12 +85,26 @@ body {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
 
+.image-grid__card__showCommentArrow:hover {
+  opacity: 1;
+}
+
 .image-grid__card__addCommentButton {
+  opacity: 0.8;
   margin: 0.5em;
 }
 
 .image-grid__card__editPostButton {
+  opacity: 0.8;
   margin: 0.5em;
+}
+
+.image-grid__card__addCommentButton:hover {
+  opacity: 1;
+}
+
+.image-grid__card__editPostButton:hover {
+  opacity: 1;
 }
 
 .header__navbar__reactLinkHome {

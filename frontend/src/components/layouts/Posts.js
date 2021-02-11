@@ -52,7 +52,7 @@ function Posts(props) {
           {commentProp.length > 0 && (
             <OverlayTrigger
               placement="left"
-              delay={{ show: 250, hide: 400 }}
+              delay={{ show: 250, hide: 250 }}
               overlay={<Tooltip id="viewCommentTooltip">View Comments</Tooltip>}
             >
               <FontAwesomeIcon
@@ -65,8 +65,8 @@ function Posts(props) {
             </OverlayTrigger>
           )}
           <OverlayTrigger
-            placement="bottom"
-            delay={{ show: 250, hide: 400 }}
+            placement={commentProp.length > 0 ? "bottom" : "left"}
+            delay={{ show: 250, hide: 250 }}
             overlay={<Tooltip id="addCommentTooltip">Add Comment</Tooltip>}
           >
             <FontAwesomeIcon
@@ -80,7 +80,7 @@ function Posts(props) {
           {props.canUpdate && (
             <OverlayTrigger
               placement="right"
-              delay={{ show: 250, hide: 400 }}
+              delay={{ show: 250, hide: 250 }}
               overlay={<Tooltip id="editPostTooltip">Edit Post</Tooltip>}
             >
               <FontAwesomeIcon
