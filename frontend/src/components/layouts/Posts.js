@@ -3,11 +3,13 @@ import Avatar from "react-avatar";
 import Card from "react-bootstrap/Card";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faArrowRight,
   faPlus,
+  faClipboard,
 } from "@fortawesome/free-solid-svg-icons";
 import EditMemeModal from "./EditMemeModal";
 import CommentMemeModal from "./CommentMemeModal";
@@ -16,7 +18,7 @@ import timeSince from "../utils/timeSince";
 
 function Posts(props) {
   // Component Model for Posts
-
+  const [copyMsg, setcopyMsg] = useState("Copy Meme Link");
   const [showEdit, setshowEdit] = useState(false);
   const [showComments, setshowComments] = useState(false);
   const [showCommentModal, setshowCommentModal] = useState(false);
@@ -79,7 +81,7 @@ function Posts(props) {
           </OverlayTrigger>
           {props.canUpdate && (
             <OverlayTrigger
-              placement="right"
+              placement="bottom"
               delay={{ show: 250, hide: 250 }}
               overlay={<Tooltip id="editPostTooltip">Edit Post</Tooltip>}
             >
@@ -90,6 +92,25 @@ function Posts(props) {
               />
             </OverlayTrigger>
           )}
+
+          <OverlayTrigger
+            placement="right"
+            delay={{ show: 250, hide: 250 }}
+            overlay={<Tooltip id="editPostTooltip">{copyMsg}</Tooltip>}
+          >
+            <CopyToClipboard text={memeUrlProp}>
+              <FontAwesomeIcon
+                className="image-grid__card__editPostButton"
+                icon={faClipboard}
+                onClick={() => {
+                  setcopyMsg("Copied!");
+                  setTimeout(() => {
+                    setcopyMsg("Copy Meme Link");
+                  }, 5000);
+                }}
+              />
+            </CopyToClipboard>
+          </OverlayTrigger>
           {showComments && <Comments comments={commentProp} />}
         </Card.Body>
         <Card.Footer>
