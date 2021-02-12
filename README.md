@@ -62,7 +62,7 @@ Flask microframework was a goto for this project as it is lightweight and enable
 
 | Method | Description                      | Parameters                                                   | Error Handling                 |
 | ------ | -------------------------------- | ------------------------------------------------------------ | ------------------------------ |
-| GET    | Endpoint to add comments to post | POST Body Raw JSON<br />_id: Id of meme to comment<br />name: Username to comment as<br />comment: Comment text to post | 400: Incomplete Post Body data |
+| GET    | Endpoint to add comments to post | POST Body Raw JSON<br />_id: Id of meme to comment<br />name: Username to comment as<br />comment: Comment text to post | 400: Incomplete Post Body data<br />404:  Post doesn't exist|
 
 
 
