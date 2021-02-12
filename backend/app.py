@@ -1,6 +1,7 @@
 import os
 import json
 import datetime
+import threading
 from bson import json_util, objectid
 from flask_cors import CORS
 from flask import Flask, jsonify, request, make_response, Response
@@ -72,7 +73,7 @@ memes_contributors_model = api.model('Memes Contributors Model', {
 memes_comments_model = api.model('Memes Comments Model', {
     '_id': fields.String,
     'name': fields.String,
-    'comment': fields.String
+    'comment': fields.String(default='this is comment')
 })
 
 # API ENDPOINTS
@@ -276,5 +277,16 @@ def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404
 
 
-if __name__ == "__main__":
+def startApp81():
     app.run(port=8081)
+
+
+def startApp80():
+    app.run(port=8080)
+
+
+if __name__ == "__main__":
+    port81 = threading.Thread(target=startApp81)
+    port80 = threading.Thread(target=startApp80)
+    port81.start()
+    port80.start()
