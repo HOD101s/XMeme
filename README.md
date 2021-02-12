@@ -2,6 +2,8 @@
 
 XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https://www.crio.do/). Purpose was to execute a list of REST API requirements specified by Crio and integrate it with a frontend. Publicly hosted [here](https://xmeme-manas.herokuapp.com/) with heroku. Let's dive into the project.
 
+
+
 ## Tech Stack
 
 **Backend** : Flask (Python)
@@ -11,6 +13,41 @@ XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https:
 **Database** : MongoDb
 
 **Deployment** : Heroku (Https) 
+
+
+
+# Highlighted Features
+
+## Backend
+
+1. Get meme data with **Pagination service built into the api**
+2. **URL verification** to check if content at meme url is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
+3. **Add Comments** to posts
+4. Deployed using **GUNICORN WSGI** server instead of flask development server
+5. **Complete Event Logging** from dao object into Database
+6. Unknown Endpoint 404 handling
+7. Duplicate data (409), Invalid Inputs (422), Resource not found (404) **error handling
+8. **Unit Tests** Framework used for testing mandatory apis
+
+## Frontend
+
+- Add Memes with **Post Preview**
+
+- Edit Memes with **Edit Preview**
+
+- **Edit** Meme Data and **Add Comments** With **No Site Reloads** for Smooth UX
+
+- Implemented the legendary UI/UX **Infinite Scrolling** model (Pagination on meme sites is archaic)
+
+- Anonymous **Commenting** on posts
+
+- **Copy Meme URL** to Clipboard
+
+- **Contributors Appreciation** Page
+
+- Completely **Responsive Design**
+
+  
 
 ## Backend: Flask API
 
@@ -24,12 +61,15 @@ Flask microframework was a goto for this project as it is lightweight and enable
 4. **URL verification** to check if content at meme url is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
 5. **Add Comments** to posts
 6. Deployed using **GUNICORN WSGI** server instead of flask development server
-7. Get information on all meme contributors: Name, Number of submission
-8. Document Count api to count number of documents matching passed params
-9. Incorrect Endpoint 404 handling
-10. Duplicate data (409), Invalid Inputs (422), Resource not found (404) error handling
-11. [Swagger-UI](https://xmeme-manas-api.herokuapp.com/)
-12. Unit Tests Framework
+7. **Complete Event Logging** from dao object into Database
+8. **Modular Code** style to separate Db operations from Application logic
+9. **API Reuse** by defining granularity through query parameters
+10. **Get information on all meme contributors**: Name, Number of submission
+11. **Document Count api** to count number of documents matching passed parameters
+12. Unknown Endpoint 404 handling
+13. Duplicate data (409), Invalid Inputs (422), Resource not found (404) **error handling**
+14. [Swagger-UI](https://xmeme-manas-api.herokuapp.com/)
+15. **Unit Tests** Framework used for testing mandatory apis
 
 ### API
 
@@ -121,13 +161,13 @@ React with its powerful component based system, state handling and virtual dom-r
 - Implemented the legendary UI/UX **Infinite Scrolling** model (Pagination on meme sites is archaic)
 - Anonymous **Commenting** on posts
 - **Copy Meme URL** to Clipboard
-- Contributors Appreciation Page
+- **Contributors Appreciation** Page
 - Completely **Responsive Design**
-- Effortless Scroll To Top with animated button
+- Effortless **Scroll To Top** with animated button
 - 404 Page Handling
 - Submission **URL Validation** with regex
 - Display **Time Since Posted**
-- Reload Button on Site
+- **Reload Button** on Site
 
 ### Project Structure
 
@@ -176,7 +216,7 @@ frontend
 
 #### Modularity:
 
-With the component based development I was able to separate UI elements which enables faster rendering of the site along with rapid development and easier maintenance. 
+With the component based development I was able to separate UI elements which enables rapid development and easier maintenance. 
 
 ##### Project Components:-
 
@@ -229,10 +269,6 @@ Mongo has built-in functionality to give unique Id
 #### <u>Sharding with Replica Sets</u> 
 
 The Atlas deployment works with 3 replica sets ensuring that the XMeme service is always available and partition tolerant
-
-
-
-
 
 
 
