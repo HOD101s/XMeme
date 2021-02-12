@@ -65,11 +65,11 @@ memes_post_model = api.model('Memes post Input', {
     'caption': fields.String,
     'url': fields.String
 })
-memes_contributors_model = api.model('Memes Contributors', {
+memes_contributors_model = api.model('Memes Contributors Model', {
     '_id': fields.String,
     'count': fields.String
 })
-memes_comments_model = api.model('Memes Contributors', {
+memes_comments_model = api.model('Memes Comments Model', {
     '_id': fields.String,
     'name': fields.String,
     'comment': fields.String
@@ -80,7 +80,7 @@ memes_comments_model = api.model('Memes Contributors', {
 
 @api.route('/memes')
 class MemesRoute(Resource):
-    @api.doc(responses={400: "Not received all params", 422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
+    @api.doc(responses={400: "Not received all required parameters", 422: "Resource isn't valid or of expected type", 200: "Meme uploaded", 500: "Internal Server Error", 409: "Entry already exists"})
     @api.expect(memes_post_model)
     def post(self):
         '''Endpoint to send a meme to the backend.
@@ -89,8 +89,11 @@ class MemesRoute(Resource):
 
         req_data = json.loads(request.data)
 
+        # check if string is empty or emptyspace
+        def checkNoValue(x): return x.isspace() or not x
+
         # check if all fields have values and are not empty strings
-        if (not all(param in req_data for param in ['name', 'url', 'caption'])) or not (req_data['name'] and req_data['url'] and req_data['caption']):
+        if (not all(param in req_data for param in ['name', 'url', 'caption'])) or checkNoValue(req_data['name']) or checkNoValue(req_data['url']) or checkNoValue(req_data['caption']):
             return make_response(jsonify({'msg': 'Enter values for all: name, url, caption'}), 400)
 
         # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
@@ -160,7 +163,7 @@ class MemesIDRoutes(Resource):
         # return meme data
         return json.loads(json_util.dumps(meme_data)), 200
 
-    @api.doc(responses={409: 'Passed Existing values', 200: 'Meme updated'})
+    @api.doc(responses={409: 'Passed Existing Values', 200: 'Meme updated'})
     @api.expect(memes_update_model)
     def patch(self, _id):
         '''Endpoint to update the caption or url for an existing meme'''
@@ -193,6 +196,10 @@ class MemesIDRoutes(Resource):
             validation_status, validation_response = validate_image_url(url)
             if not validation_status:
                 return validation_response
+
+        # check if entry has already been made
+        if xdao.count_meme_documents(meme_data[0][0]['name'], url, caption) > 0:
+            return make_response(jsonify({'msg': 'Entry already exists'}), 409)
 
         try:
             # update meme
@@ -238,24 +245,32 @@ class SubmissionCount(Resource):
 
 @api.route('/addcomment')
 class AddComment(Resource):
-    @api.doc(responses={200: "Added Comment", 500: "Internal Server Error", 400: "Incomplete Data"})
+    @api.doc(responses={200: "Added Comment", 500: "Internal Server Error", 400: "Incomplete Data", 404: "Meme not Found"})
     @api.expect(memes_comments_model)
     def post(self):
         '''Endpoint to post Comments'''
         req_data = json.loads(request.data)
 
+        # check if string is empty or emptyspace
+        def checkNoValue(x): return x.isspace() or not x
+
         # check if all fields have values and are not empty strings
-        if (not all(param in req_data for param in ['name', 'comment', '_id'])) or not (req_data['name'] and req_data['comment'] and req_data['_id']):
+        if (not all(param in req_data for param in ['name', 'comment', '_id'])) or checkNoValue(req_data['name']) or checkNoValue(req_data['comment']) or checkNoValue(req_data['_id']):
             return make_response(jsonify({'msg': 'Enter values for fields'}), 400)
+
+        # checks if meme exists. if get() returns response type we return it
+        midRoute = MemesIDRoutes()
+        response = midRoute.get(req_data['_id'])
+        if isinstance(response, FlaskResponse):
+            return response
 
         response = xdao.add_comment(
             req_data['_id'], req_data['name'], req_data['comment'])
 
         return make_response(jsonify({'msg': 'Inserted Comment'}), 200)
 
+
 # Flask error handling
-
-
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404
