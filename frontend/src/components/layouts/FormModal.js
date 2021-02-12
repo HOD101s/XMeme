@@ -104,12 +104,12 @@ function FormModal(props) {
           <Container className="text-center">
             {/* Post Preview: Cannot use Posts component due to props loop */}
             <Card className="image-grid__card">
-              <Card.Title className="image-grid__card_caption">
+              <Card.Title className="image-grid__card__caption">
                 {memeCaption}
               </Card.Title>
               <Card.Img variant="top" src={memeUrl} />
               <Card.Body>
-                <Card.Text className="image-grid__card_name">
+                <Card.Text className="image-grid__card__name">
                   <Avatar
                     name={memeName}
                     size="25"
