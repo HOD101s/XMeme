@@ -277,16 +277,5 @@ def resource_not_found(e):
     return jsonify({'msg': 'Resource not found'}), 404
 
 
-def startApp81():
-    app.run(port=8081)
-
-
-def startApp80():
-    app.run(port=8080)
-
-
 if __name__ == "__main__":
-    port81 = threading.Thread(target=startApp81)
-    port80 = threading.Thread(target=startApp80)
-    port81.start()
-    port80.start()
+    app.run()
