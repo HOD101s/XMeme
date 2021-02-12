@@ -44,10 +44,6 @@ class XmemeDb:
 
     def find_memes(self, skip=0, limit=100):
         '''Fetch memes from db. Apply skip, limit and sort operations'''
-        # if sort:
-        #     print(sort)
-        #     self.db.memes.aggregate([{"$sort": sort}, {"$skip": skip}, {"$limit": limit}, {
-        #                             "$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
         return self.db.memes.aggregate([{"$sort": {"created": -1}}, {"$skip": skip}, {"$limit": limit}, {"$addFields": {"id": {"$toString": "$_id"}}}, {"$project": {"_id": 0}}])
 
     def find_memes_by_id(self, _id):
