@@ -23,12 +23,13 @@ Flask microframework was a goto for this project as it is lightweight and enable
 3. Get meme data with **Pagination service built into the api**
 4. **URL verification** to check if content at meme url is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
 5. **Add Comments** to posts
-6. Get information on all meme contributors: Name, Number of submission
-7. Document Count api to count number of documents matching passed params
-8. Incorrect Endpoint 404 handling
-9. Duplicate data (409), Invalid Inputs (422), Resource not found (404) error handling
-10. [Swagger-UI](https://xmeme-manas-api.herokuapp.com/)
-11. Unit Tests Framework
+6. Deployed using **GUNICORN WSGI** server instead of flask development server
+7. Get information on all meme contributors: Name, Number of submission
+8. Document Count api to count number of documents matching passed params
+9. Incorrect Endpoint 404 handling
+10. Duplicate data (409), Invalid Inputs (422), Resource not found (404) error handling
+11. [Swagger-UI](https://xmeme-manas-api.herokuapp.com/)
+12. Unit Tests Framework
 
 ### API
 
