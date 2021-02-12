@@ -119,6 +119,7 @@ React with its powerful component based system, state handling and virtual dom-r
 - **Edit** Meme Data and **Add Comments** With **No Site Reloads** for Smooth UX
 - Implemented the legendary UI/UX **Infinite Scrolling** model (Pagination on meme sites is archaic)
 - Anonymous **Commenting** on posts
+- **Copy Meme URL** to Clipboard
 - Contributors Appreciation Page
 - Completely **Responsive Design**
 - Effortless Scroll To Top with animated button
