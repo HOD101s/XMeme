@@ -26,6 +26,11 @@ function Posts(props) {
   const [memeCaptionProp, setmemeCaptionProp] = useState(props.memeCaption);
   const [commentProp, setcommentProp] = useState(props.memeComments);
 
+  const addDefaultSrc = (ev) => {
+    ev.target.src =
+      "https://freefrontend.com/assets/img/html-css-404-page-templates/HTML-404-Page-with-SVG.png";
+  };
+
   return (
     <div>
       <Card className="image-grid__card">
@@ -36,10 +41,7 @@ function Posts(props) {
           variant="top"
           src={memeUrlProp}
           alt={memeCaptionProp}
-          onError={(e) => {
-            e.target.onerror = null;
-            e.src = "../../static/images/logo192.png";
-          }}
+          onError={addDefaultSrc}
         />
         <Card.Body>
           <Card.Text className="image-grid__card__name">
