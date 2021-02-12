@@ -19,4 +19,3 @@ docs/_build/
 __pycache__
 swagger.json
 *.txt
-test_server.sh
