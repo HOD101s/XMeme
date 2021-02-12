@@ -5,26 +5,7 @@ sudo apt-get install -y mongodb-org
 sudo systemctl enable mongod.service
 sudo systemctl start mongod.service
 sudo apt install -y python3-pip
-pip3 install Flask
-pip3 install Flask-Cors
-pip3 install flask-restx
-pip3 install gunicorn
-pip3 install idna
-pip3 install itsdangerous
-pip3 install Jinja2
-pip3 install jsonschema
-pip3 install MarkupSafe
-pip3 install pycodestyle
-pip3 install PyJWT
-pip3 install pymongo
-pip3 install pyrsistent
-pip3 install pytz
-pip3 install requests
-pip3 install six
-pip3 install toml
-pip3 install urllib3
-pip3 install Werkzeug
-pip3 install wincertstore
+pip3 install -r ./backend/requirements.txt
 
 
 export MONGO_XMEME_CONNECT_URI="mongodb://localhost:27017/"
