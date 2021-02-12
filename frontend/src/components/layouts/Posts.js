@@ -72,7 +72,7 @@ function Posts(props) {
             overlay={<Tooltip id="addCommentTooltip">Add Comment</Tooltip>}
           >
             <FontAwesomeIcon
-              className="image-grid__card__addCommentButton"
+              className="image-grid__card__GenericPostButton"
               icon={faPlus}
               onClick={() => {
                 setshowCommentModal((prev) => !prev);
@@ -86,7 +86,7 @@ function Posts(props) {
               overlay={<Tooltip id="editPostTooltip">Edit Post</Tooltip>}
             >
               <FontAwesomeIcon
-                className="image-grid__card__editPostButton"
+                className="image-grid__card__GenericPostButton"
                 icon={faEdit}
                 onClick={() => setshowEdit(true)}
               />
@@ -100,7 +100,7 @@ function Posts(props) {
           >
             <CopyToClipboard text={memeUrlProp}>
               <FontAwesomeIcon
-                className="image-grid__card__editPostButton"
+                className="image-grid__card__GenericPostButton"
                 icon={faClipboard}
                 onClick={() => {
                   setcopyMsg("Copied!");

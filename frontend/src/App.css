@@ -89,21 +89,12 @@ body {
   opacity: 1;
 }
 
-.image-grid__card__addCommentButton {
+.image-grid__card__GenericPostButton {
   opacity: 0.8;
   margin: 0.5em;
 }
 
-.image-grid__card__editPostButton {
-  opacity: 0.8;
-  margin: 0.5em;
-}
-
-.image-grid__card__addCommentButton:hover {
-  opacity: 1;
-}
-
-.image-grid__card__editPostButton:hover {
+.image-grid__card__GenericPostButton:hover {
   opacity: 1;
 }
 
