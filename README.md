@@ -257,7 +257,7 @@ First choice due to its comfortable document based structure. Used [Pymongo](htt
 
 #### <u>Logging</u> 
 
-Added event logging into mongo that logs every action taken on the api. From posting, editing to commenting everything is logged. Example:
+Added event logging into mongo that logs every action taken on the api. From posting, editing to commenting everything is logged. Data is fed from the **dao.py Database Access Operations Class** in api. Example:
 
 ```json
 {'_id': ObjectId('60200ed6e515fe1b326c7d8b'),
