@@ -18,8 +18,8 @@ def validate_image_url(url):
     if re.match(image_url_regex, url) or re.match(image_base4_data_regex, url):
         # DISABLED IMAGE URL VERIFICATION FOR CRIO AUTOMATION TESTS
         # check if content at url is of image type
-        # if not validate_url_content(url):  # meme_data[0]['url']
-        #     return False, make_response(jsonify({'msg': "Url doesn't lead to valid image"}), 422)
+        if not validate_url_content(url):  # meme_data[0]['url']
+            return False, make_response(jsonify({'msg': "Url doesn't lead to valid image"}), 422)
         return True, make_response(jsonify({'msg': "Url is valid image"}), 200)
 
     return False, make_response(jsonify({'msg': "Invalid Url"}), 422)
