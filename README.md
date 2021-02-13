@@ -1,6 +1,6 @@
 # XMeme - Manas Acharya 
 
-XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https://www.crio.do/). Purpose was to execute a list of REST API requirements specified by Crio and integrate it with a frontend. Publicly hosted [here](https://xmeme-manas.herokuapp.com/) with heroku. Let's dive into the project.
+XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https://www.crio.do/). Purpose was to execute a list of REST API requirements specified by Crio and integrate it with a frontend. Publicly hosted [here](https://xmeme-manas.herokuapp.com/) with Heroku. Let's dive into the project.
 
 
 
@@ -14,6 +14,8 @@ XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https:
 
 **Deployment** : Heroku (Https) 
 
+**Containerization** : Docker
+
 
 
 # Highlighted Features
@@ -21,13 +23,14 @@ XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https:
 ## Backend
 
 1. Get meme data with **Pagination service built into the api**
-2. **URL verification** to check if content at meme url is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
+2. **URL verification** to check if content at meme URL is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
 3. **Add Comments** to posts
 4. Deployed using **GUNICORN WSGI** server instead of flask development server
 5. **Complete Event Logging** from dao object into Database
 6. Unknown Endpoint 404 handling
 7. Duplicate data (409), Invalid Inputs (422), Resource not found (404) **error handling
 8. **Unit Tests** Framework used for testing mandatory apis
+9. Created **Dockerfile** to containerize and run server
 
 ## Frontend
 
@@ -51,14 +54,14 @@ XMeme is a meme directory made for [Crio Winter of doing Stage 2 phase B](https:
 
 ## Backend: Flask API
 
-Flask microframework was a goto for this project as it is lightweight and enables rapid development of REST APIs. As a requirement the Swagger documentation was built using the [flask restx library](https://flask-restx.readthedocs.io/en/latest/). It has been hosted [here](https://xmeme-manas-api.herokuapp.com/) with heroku.
+Flask microframework was a goto for this project as it is lightweight and enables rapid development of REST APIs. As a requirement the Swagger documentation was built using the [flask restx library](https://flask-restx.readthedocs.io/en/latest/). It has been hosted [here](https://xmeme-manas-api.herokuapp.com/) with Heroku.
 
 ### Features:
 
-1. **Post memes** with Owner name, Meme url and caption
-2. **Edit meme** url and caption
+1. **Post memes** with Owner name, Meme URL and caption
+2. **Edit meme** URL and caption
 3. Get meme data with **Pagination service built into the api**
-4. **URL verification** to check if content at meme url is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
+4. **URL verification** to check if content at meme URL is of image type (Disabled for assessment as Fetch requests on EC2 requires change of settings from aws console. Feature will work on public api endpoint.)
 5. **Add Comments** to posts
 6. Deployed using **GUNICORN WSGI** server instead of flask development server
 7. **Complete Event Logging** from dao object into Database
@@ -70,6 +73,7 @@ Flask microframework was a goto for this project as it is lightweight and enable
 13. Duplicate data (409), Invalid Inputs (422), Resource not found (404) **error handling**
 14. [Swagger-UI](https://xmeme-manas-api.herokuapp.com/)
 15. **Unit Tests** Framework used for testing mandatory apis
+16. Created **Dockerfile** to containerize and run server
 
 ### API
 
@@ -78,14 +82,14 @@ Flask microframework was a goto for this project as it is lightweight and enable
 | Method | Description                                                  | Parameters                                                   | Error Handling                                               |
 | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | GET    | Endpoint to fetch the latest 100 memes : Optionally can enable pagination by passing page and limit value. Default limit if not passed is taken as 100. | Optional Query Params:<br />page : indicates pagination page number<br />limit: number of memes per page | 500: Internal Server Error                                   |
-| POST   | Endpoint to send a meme to the backend. Returns Unique ID for the uploaded meme. | POST Body Raw JSON Data:<br />name: MemeOwner name<br />url: Meme Url<br />caption: Post caption | 400: Empty POST Body<br />409: Duplicate Entry<br />Error<br />422: Invalid  URL input |
+| POST   | Endpoint to send a meme to the backend. Returns Unique ID for the uploaded meme. | POST Body Raw JSON Data:<br />name: Meme Owner name<br />url: Meme URL<br />caption: Post caption | 400: Empty POST Body<br />409: Duplicate Entry<br />Error<br />422: Invalid  URL input |
 
 - /memes/<id>
 
 | Method | Description                                                | Parameters                                                   | Error Handling                                        |
 | ------ | ---------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------- |
 | GET    | Endpoint to fetch a particular Meme with passed ID         | -                                                            | 404: Specified meme doesn't exist                     |
-| PATCH  | Endpoint to update the caption or url for an existing meme | PATCH Body Raw JSON Data:<br />url: New Meme Url<br />caption: New Post caption | 409: Update Field values identical to Existing Values |
+| PATCH  | Endpoint to update the caption or url for an existing meme | PATCH Body Raw JSON Data:<br />url: New Meme URL<br />caption: New Post caption | 409: Update Field values identical to Existing Values |
 
 - /contributors
 
@@ -112,6 +116,7 @@ Flask microframework was a goto for this project as it is lightweight and enable
 ```
 backend
 |   app.py
+|   dockerStart.sh
 |   Procfile
 |   requirements.txt
 |   tests.py
@@ -134,6 +139,8 @@ backend
 - Procfile : Heroku deployment file for gunicorn
 
 - requirements.txt : python environment for project
+
+- dockerStart.sh : docker installation and testing script
 
   
 
