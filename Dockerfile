@@ -22,4 +22,5 @@ RUN pip3 install -r requirements.txt
 EXPOSE 8080
 EXPOSE 8081
 ENV MONGO_XMEME_CONNECT_URI=mongodb://localhost:27017/
+RUN chmod +x dockerStart.sh
 CMD ./dockerStart.sh
