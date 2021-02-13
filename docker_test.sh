@@ -6,6 +6,8 @@ sudo systemctl enable docker
 sudo docker build -t xmeme_app .
 sudo docker run -d -p 8081:8081 xmeme_app
 
+sleep 10
+
 curl --location --request GET 'http://localhost:8081/memes'
 
 
